@@ -19,7 +19,7 @@ public class SpawnParticle : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            animator.SetTrigger("On");
+            animator.SetTrigger("Spawn");
             visualEffect.Play();
         }
     }
