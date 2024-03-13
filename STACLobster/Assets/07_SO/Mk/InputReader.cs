@@ -1,18 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class InputReader : MonoBehaviour
+[CreateAssetMenu(menuName = "SO/InputReader")]
+public class InputReader : ScriptableObject, PlayerAcition.IPlayerActionActions
 {
-    // Start is called before the first frame update
-    void Start()
+    public event Action<Vector2> MovementEvent;
+
+    private PlayerAcition _playerActions;
+
+    private void OnEnable()
     {
+        if (_playerActions == null)
+        {
+            _playerActions = new PlayerAcition();
+            _playerActions.PlayerAction.SetCallbacks(this);
+        }
         
+        _playerActions.Enable();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnMovement(InputAction.CallbackContext context)
     {
-        
+        Vector2 vec = context.ReadValue<Vector2>();
+        MovementEvent?.Invoke(vec);
     }
+    
 }
