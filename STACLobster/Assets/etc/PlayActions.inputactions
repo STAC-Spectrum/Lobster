@@ -1,14 +1,14 @@
 {
-    "name": "PlayerActions",
+    "name": "PlayActions",
     "maps": [
         {
-            "name": "PlayerAction",
-            "id": "b9d002bb-610b-48e8-98d7-590cc28b608b",
+            "name": "Player",
+            "id": "e3880230-1ba5-43b2-95c0-79fa6c540f51",
             "actions": [
                 {
                     "name": "Movement",
                     "type": "Value",
-                    "id": "ebf8fd4b-2fd6-46f8-a40a-f5b7a23f943f",
+                    "id": "51f91244-7cb1-46b2-bd83-7bf311a7c126",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -17,8 +17,8 @@
             ],
             "bindings": [
                 {
-                    "name": "SpaceASD",
-                    "id": "2e96f3ac-38a9-431c-a4b3-671caed9e651",
+                    "name": "AD",
+                    "id": "f59000f0-b955-4706-b0eb-83a14349dab4",
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
@@ -28,45 +28,23 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
-                    "id": "ce78de16-c344-435a-81d7-1cd10b7b1290",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "4ec35f0d-e28f-46ff-9937-560d9dd4dfae",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "left",
-                    "id": "1ffa682c-2738-4ed7-bb9a-3cf12e942586",
+                    "id": "b080e880-adf1-4f67-83fe-ae89bdc56c4f",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "right",
-                    "id": "3f116781-e994-495d-aa99-187a3a1c2c83",
+                    "id": "727c7f14-fffe-4445-b37a-23dedc85e534",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -80,12 +58,12 @@
             "bindingGroup": "PC",
             "devices": [
                 {
-                    "devicePath": "<Keyboard>",
+                    "devicePath": "<Mouse>",
                     "isOptional": false,
                     "isOR": false
                 },
                 {
-                    "devicePath": "<Mouse>",
+                    "devicePath": "<Keyboard>",
                     "isOptional": false,
                     "isOR": false
                 }

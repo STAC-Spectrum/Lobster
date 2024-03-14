@@ -11,7 +11,7 @@ public abstract class Agent : MonoBehaviour
 
     #endregion
 
-    private void Awake()
+    protected void Awake()
     {
         movementCompo = GetComponent<AgentMovement>();
     }

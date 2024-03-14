@@ -5,18 +5,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(menuName = "SO/InputReader")]
-public class InputReader : ScriptableObject, PlayerAcition.IPlayerActionActions
+public class InputReader : ScriptableObject, PlayActions.IPlayerActions
 {
     public event Action<Vector2> MovementEvent;
 
-    private PlayerAcition _playerActions;
+    private PlayActions _playerActions;
 
     private void OnEnable()
     {
         if (_playerActions == null)
         {
-            _playerActions = new PlayerAcition();
-            _playerActions.PlayerAction.SetCallbacks(this);
+            _playerActions = new PlayActions();
+            _playerActions.Player.SetCallbacks(this);
         }
         
         _playerActions.Enable();
@@ -27,5 +27,4 @@ public class InputReader : ScriptableObject, PlayerAcition.IPlayerActionActions
         Vector2 vec = context.ReadValue<Vector2>();
         MovementEvent?.Invoke(vec);
     }
-    
 }
