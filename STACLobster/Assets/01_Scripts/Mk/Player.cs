@@ -35,9 +35,13 @@ public class Player : Agent
 
     private void Update()
     {
-        if (Mouse.current.rightButton.wasPressedThisFrame)
+        if (Input.GetMouseButton(1))
         {
-            print("눌리고 있음");
+            Time.timeScale = Mathf.Lerp(Time.timeScale, 0.5f, Time.unscaledDeltaTime * 3);
+        }
+        else
+        {
+            Time.timeScale = 1;
         }
         
     }
