@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
 {
     public event Action<Vector2> MovementEvent;
-    public event Action<bool> JumpEvent; 
+    public event Action JumpEvent; 
 
     public PlayerInput _playerActions;
 
@@ -31,6 +31,6 @@ public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        JumpEvent?.Invoke(true);
+        JumpEvent?.Invoke();
     }
 }
