@@ -35,7 +35,9 @@ public class Player : Agent
 
     public void Move(Vector2 vec)
     {
-        _rigidbody.velocity = vec * _speed;
+        print(1);
+        Vector2 movec = new Vector2(vec.x * _speed, _velocity.y);
+        _rigidbody.velocity = movec;
     }
     
 }
