@@ -330,7 +330,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 50, y: 1, z: 50}
+  m_LocalScale: {x: 500, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -455,9 +455,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BindingMode: 1
   m_FollowOffset: {x: 0, y: 0.66, z: -10}
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_XDamping: 0.1
+  m_YDamping: 0.1
+  m_ZDamping: 0.1
   m_AngularDampingMode: 0
   m_PitchDamping: 0
   m_YawDamping: 0
@@ -549,7 +549,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputReader: {fileID: 11400000, guid: be0ca0e690f894b49a1ada811c53bcb1, type: 2}
-  _speed: 5
+  _moveSpeed: 10
+  _jumpPower: 100
 --- !u!54 &1233471924
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -575,7 +576,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 72
+  m_Constraints: 64
   m_CollisionDetection: 0
 --- !u!1 &1725036460
 GameObject:
