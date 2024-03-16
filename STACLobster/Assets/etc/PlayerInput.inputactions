@@ -22,6 +22,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "BulletTime",
+                    "type": "Button",
+                    "id": "ec55b19a-03cb-448d-9dcc-475c1ec5912e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LightRush",
+                    "type": "Value",
+                    "id": "c4fe98eb-020f-4150-b8fe-30e63beee1d7",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -66,6 +84,28 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "96ffb70d-45c3-4ff6-ad46-d47c6bb7cc28",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "BulletTime",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0eb8816a-8ac8-4b44-ade5-0050cb727deb",
+                    "path": "<Mouse>/radius",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "LightRush",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

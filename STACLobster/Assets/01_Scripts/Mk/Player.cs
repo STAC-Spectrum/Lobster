@@ -11,16 +11,16 @@ public class Player : Agent
     [SerializeField] private float _moveSpeed = 5f, _jumpPower = 7f, _forceGravity = 15f;
     [SerializeField] private LayerMask _layerMask;
 
-    private Rigidbody _rigidbody;
     private PlayerInput _playerInput;
-
-    public float testpower;
+    private Rigidbody _rigidbody;
     
     private Vector3 _velocity;
-    private Vector3 mousePos;
     private float _verticalVelocity;
 
+    private Vector3 mousePos;
+    
     #region 수정 해야함 야발 프로토타입
+    public float testpower;
 
     [SerializeField] private GameObject _lightTrail;
     [SerializeField] private GameObject _lightAnlge;
@@ -32,18 +32,47 @@ public class Player : Agent
     private float _angle;
 
     #endregion
-    
 
     public Action MouseMoveEvent;
+    private Vector2 _mousePos;
 
+    [SerializeField] private GameObject _targetCube;
+    
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        PlayerInput playerInput = new PlayerInput();
-        playerInput.Player.Enable();
+        /*PlayerInput playerInput = new PlayerInput();
+        playerInput.Player.Enable();*/
         _inputReader.JumpEvent += JumpHandle;
+        _inputReader.BulletTimeEvent += BulletTimeHandle;
+        _inputReader.LightRush += LightRushHandle;
         MouseMoveEvent += MouseMoveHandle;
-        _lightTrail.SetActive(false);
+        //_lightTrail.SetActive(false);
+    }
+
+
+    private void LightRushHandle(double pos)
+    {
+        //print($"마우스 위치 {_mouseCam.ScreenToWorldPoint(pos)}");
+        
+        print(pos);
+
+        /*if (_inputReader._playerActions.Player.BulletTime.WasReleasedThisFrame())
+        {
+            print(_mousePos);
+            _mousePos = _mouseCam.ScreenToWorldPoint(pos);
+            _rigidbody.AddForce(_mousePos, ForceMode.Impulse);
+        }*/
+        
+    }
+
+    private void BulletTimeHandle(bool isPress)
+    {
+        if (isPress)
+            Time.timeScale = 0.4f;
+        else if(isPress == false)
+            Time.timeScale = 1f;
+        
     }
 
 
@@ -59,26 +88,43 @@ public class Player : Agent
 
     private void Update()
     {
-        MouseCheck(); //Input 따로 받아서 처리해야함
+        
+        // 테스트 큐브 바라보기
+        // 방향 벡터 = 목표 벡터 - 시작 벡터
+        // 이 함수 나중에 조져야 함
+        Vector3 targetPos = MousePositionCalculate();
+        Vector3 dir = targetPos - _lightAnlge.transform.position;
+        Quaternion rot = Quaternion.LookRotation(dir.normalized);
 
+        _lightAnlge.transform.rotation = rot;
+        _lightAnlge.transform.eulerAngles = new Vector3(_lightAnlge.transform.eulerAngles.x + 180,
+            _lightAnlge.transform.eulerAngles.y, 0);
+
+        //마우스 조져 버려야함
         if (Mouse.current.rightButton.wasReleasedThisFrame)
         {
             mousePos = _mouseCam.ScreenToWorldPoint(
                 new Vector3(Input.mousePosition.x, Input.mousePosition.y, _mouseCam.farClipPlane));
-            MouseMoveEvent?.Invoke();
+            //MouseMoveEvent?.Invoke();
         }
 
         if (_isMouse)
         {
             _lightTrail.SetActive(true);
-            transform.position = Vector2.MoveTowards(
+            /*transform.position = Vector2.MoveTowards(
                 transform.position,
                 new Vector2(mousePos.x * 10, mousePos.y * 10).normalized * testpower, 
-                _mouseSpeed * Time.deltaTime);
+                _mouseSpeed * Time.deltaTime);*/
         }
         
     }
-    
+
+    private Vector3 MousePositionCalculate()
+    {
+        Vector3 mousePos = _mouseCam.ScreenToWorldPoint(Input.mousePosition);
+        return new Vector3(mousePos.x, mousePos.y);
+    }
+
     private void MouseMoveHandle()
     {
         _angle = Mathf.Atan2(mousePos.y - transform.position.y, mousePos.x - transform.position.x) * Mathf.Rad2Deg;
@@ -102,18 +148,6 @@ public class Player : Agent
         yield return new WaitForSeconds(0.32f);
         _isMouse = false;
         _lightTrail.SetActive(false);
-    }
-
-    private void MouseCheck()
-    {
-        if (Input.GetMouseButton(1))
-        {
-            Time.timeScale = Mathf.Lerp(Time.timeScale, 0.5f, Time.unscaledDeltaTime * 3);
-        }
-        else
-        {
-            Time.timeScale = 1;
-        }
     }
 
     private void GravityCalculate()
