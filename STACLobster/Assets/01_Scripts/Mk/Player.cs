@@ -20,7 +20,6 @@ public class Player : Agent
     private Vector3 mousePos;
     
     #region 수정 해야함 야발 프로토타입
-    public float testpower;
 
     [SerializeField] private GameObject _lightTrail;
     [SerializeField] private GameObject _lightAnlge;
@@ -28,15 +27,12 @@ public class Player : Agent
     [SerializeField] private Camera _mouseCam;
 
     private bool _isMouse = false;
-    [SerializeField] private float _mouseSpeed = 30;
     private float _angle;
 
     #endregion
 
     public Action MouseMoveEvent;
     private Vector2 _mousePos;
-
-    [SerializeField] private GameObject _targetCube;
     
     private void Awake()
     {
