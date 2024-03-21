@@ -10,6 +10,7 @@ public class Player : Agent
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private float _moveSpeed = 5f, _jumpPower = 7f, _forceGravity = 15f;
     [SerializeField] private LayerMask _layerMask;
+    [SerializeField] private float _maxDistance = 100f;
     private PlayerInput _playerInput;
     private Rigidbody _rigidbody;
     private Vector3 _velocity;
@@ -82,6 +83,16 @@ public class Player : Agent
     private void Update()
     {
 
+        if (Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            mousePos = Camera.main.ScreenToWorldPoint(
+                new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.farClipPlane));
+            if (Physics.Raycast(mousePos, Vector3.forward, out RaycastHit hit, _maxDistance, _layerMask))
+            {
+                //여기 레이 맞으면 충돌 코드 추가해야함
+            }
+        }
+
         // 테스트 큐브 바라보기
         // 방향 벡터 = 목표 벡터 - 시작 벡터
         // 이 함수 나중에 조져야 함
@@ -93,13 +104,7 @@ public class Player : Agent
         _lightAnlge.transform.eulerAngles = new Vector3(_lightAnlge.transform.eulerAngles.x + 180,
             _lightAnlge.transform.eulerAngles.y, 0);
 
-        //마우스 조져 버려야함
-        if (Mouse.current.rightButton.wasReleasedThisFrame)
-        {
-            mousePos = Camera.main.ScreenToWorldPoint(
-                new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.farClipPlane));
-            //MouseMoveEvent?.Invoke();
-        }
+        
 
         if (_isMouse)
         {
