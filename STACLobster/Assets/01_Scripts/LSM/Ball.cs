@@ -7,6 +7,13 @@ public class Ball : MonoBehaviour
 
     public Vector3 direction;
     public float speed;
+    private Collider collider;
+
+
+    private void Awake()
+    {
+        collider = GetComponentInChildren<SphereCollider>();
+    }
 
     private void Start()
     {
@@ -17,6 +24,10 @@ public class Ball : MonoBehaviour
     {
         //transform.position += Vector3.forward;
         transform.position += transform.forward * speed * Time.deltaTime;
+        if (Input.GetMouseButtonDown(0))
+        {
+  
+        }
     }
 
 

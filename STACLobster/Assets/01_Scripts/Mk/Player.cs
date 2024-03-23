@@ -17,11 +17,14 @@ public class Player : Agent
     private float _verticalVelocity;
     private Vector3 mousePos;
     private Camera _main;
+    private bool _isJump = false;
 
     #region 수정 해야함 야발 프로토타입
 
     [SerializeField] private GameObject _lightTrail;
     [SerializeField] private GameObject _lightAnlge;
+
+    [SerializeField] private float _lightPower = 8f;
 
     private bool _isMouse = false;
     private float _angle;
@@ -35,8 +38,9 @@ public class Player : Agent
     {
         _main = Camera.main;
         _rigidbody = GetComponent<Rigidbody>();
-        /*PlayerInput playerInput = new PlayerInput();
-        playerInput.Player.Enable();*/
+        //playerinput???
+        PlayerInput playerInput = new PlayerInput();
+        playerInput.Player.Enable();
         _inputReader.JumpEvent += JumpHandle;
         _inputReader.BulletTimeEvent += BulletTimeHandle;
         _inputReader.LightRush += LightRushHandle;
@@ -82,13 +86,18 @@ public class Player : Agent
 
     private void Update()
     {
-
+        print(_rigidbody.velocity);
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
+            //print("마우스 눌림");
             mousePos = Camera.main.ScreenToWorldPoint(
                 new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.farClipPlane));
+            //print(mousePos);
+            Vector3 moveDir = new Vector3(mousePos.x, mousePos.y, 0).normalized;
+            _rigidbody.AddForce(moveDir * _lightPower, ForceMode.Impulse);
             if (Physics.Raycast(mousePos, Vector3.forward, out RaycastHit hit, _maxDistance, _layerMask))
             {
+                print("맞음");
                 //여기 레이 맞으면 충돌 코드 추가해야함
             }
         }
@@ -164,17 +173,23 @@ public class Player : Agent
 
     public void JumpHandle()
     {
-        bool hit = Physics.Raycast(transform.position, Vector2.down, 1.2f, _layerMask);
+        if(_isJump == true) return;
+        _isJump = true;
 
-        if (hit)
+        if (Physics.Raycast(transform.position, Vector2.down, out RaycastHit hit, _maxDistance, _layerMask))
         {
-            _rigidbody.AddForce(Vector2.up * _jumpPower);
+            //_rigidbody.velocity = new Vector3(_rigidbody.velocity.x, _jumpPower, _rigidbody.velocity.z);
+            //AddForce할때는 왜 움직이면 잘 안나가지?
+            //_rigidbody.AddForce(Vector2.up * _jumpPower, ForceMode.Impulse);
+            //print(_rigidbody.velocity);
         }
+        _isJump = false;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, Vector2.down * 1.2f);
+        Gizmos.DrawRay(mousePos, Vector3.forward * _maxDistance);
     }
 }
