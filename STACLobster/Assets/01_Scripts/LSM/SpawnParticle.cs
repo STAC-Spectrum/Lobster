@@ -17,7 +17,7 @@ public class SpawnParticle : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             animator.SetTrigger("Spawn");
             visualEffect.Play();
