@@ -29,6 +29,8 @@ public class Player : Agent
     private bool _isMouse = false;
     private float _angle;
 
+    [SerializeField] private GameObject _mouseFollowObj;  // 마우스를 쫓아 다니는 오브젝트
+    // 주석을 생활화 하자 뭐가 뭔지 모르겠네
     #endregion
 
     public Action MouseMoveEvent;
@@ -108,6 +110,9 @@ public class Player : Agent
         Vector3 dir = targetPos - _lightAnlge.transform.position;
         Quaternion rot = Quaternion.LookRotation(dir.normalized);
 
+        //마우스 따라다님
+        _mouseFollowObj.transform.position = GetMousePos();
+
         _lightAnlge.transform.rotation = rot;
         _lightAnlge.transform.eulerAngles = new Vector3(_lightAnlge.transform.eulerAngles.x + 180,
             _lightAnlge.transform.eulerAngles.y, 0);
@@ -123,6 +128,15 @@ public class Player : Agent
                 _mouseSpeed * Time.deltaTime);*/
         }
 
+    }
+
+    // 이 함수는 new input system이 대체 가능 
+    // 나중에 삭제 예정
+    private Vector3 GetMousePos()
+    {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(
+            new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.farClipPlane));
+        return mousePos;
     }
 
     private Vector3 MousePositionCalculate()
