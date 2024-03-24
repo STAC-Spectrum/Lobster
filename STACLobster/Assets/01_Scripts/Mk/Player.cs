@@ -86,7 +86,6 @@ public class Player : Agent
 
     private void Update()
     {
-        print(_rigidbody.velocity);
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
             //print("마우스 눌림");
@@ -173,23 +172,17 @@ public class Player : Agent
 
     public void JumpHandle()
     {
-        if(_isJump == true) return;
-        _isJump = true;
 
         if (Physics.Raycast(transform.position, Vector2.down, out RaycastHit hit, _maxDistance, _layerMask))
         {
-            //_rigidbody.velocity = new Vector3(_rigidbody.velocity.x, _jumpPower, _rigidbody.velocity.z);
-            //AddForce할때는 왜 움직이면 잘 안나가지?
-            //_rigidbody.AddForce(Vector2.up * _jumpPower, ForceMode.Impulse);
-            //print(_rigidbody.velocity);
+            _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, _jumpPower, _rigidbody.velocity.z);
         }
-        _isJump = false;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, Vector2.down * 1.2f);
+        Gizmos.DrawRay(transform.position, Vector2.down * _maxDistance);
         Gizmos.DrawRay(mousePos, Vector3.forward * _maxDistance);
     }
 }

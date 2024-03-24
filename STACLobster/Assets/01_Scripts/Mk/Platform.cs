@@ -9,6 +9,8 @@ public class Platform : MonoBehaviour
     private Rigidbody _playerRigidbody;
     private Collider _collider;
 
+    [SerializeField] private LayerMask[] _layer;
+    
     private void Awake()
     {
         _player = FindObjectOfType<Player>();
@@ -18,9 +20,15 @@ public class Platform : MonoBehaviour
 
     private void Update()
     {
-        if (_playerRigidbody.velocity.y >= 0)
+        if (_playerRigidbody.velocity.y >= Mathf.Epsilon)
+        {
+            transform.gameObject.layer = 0;
             _collider.isTrigger = true;
+        }
         else
+        {
+            transform.gameObject.layer = 7;
             _collider.isTrigger = false;
+        }
     }
 }
