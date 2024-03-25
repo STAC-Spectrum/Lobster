@@ -702,12 +702,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c1d78f5a12f0e4d8753f0fe22171d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserDistance: 100
+  laserDistance: 16
   numberReflection: 2
   firePos: {fileID: 1860076343}
   layerMask:
     serializedVersion: 2
     m_Bits: 192
+  laserDealayTime: 0.1
+  laserAfterimagetiime: 1
 --- !u!1 &448673960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,13 +1107,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470346478}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.101665996, z: -0, w: 0.9948186}
   m_LocalPosition: {x: 0.41, y: 2.1880286, z: 17.93}
   m_LocalScale: {x: 5, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -11.67, z: 0}
 --- !u!1 &568453057
 GameObject:
   m_ObjectHideFlags: 0
@@ -1844,7 +1846,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1876,7 +1878,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.11317825
+        value: 0.053329468
         inSlope: 0
         outSlope: 0
         tangentMode: 0
