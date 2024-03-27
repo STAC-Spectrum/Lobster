@@ -725,10 +725,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   _maxDistance: 1.05
-  _lightTrail: {fileID: 1402871925}
-  _lightAnlge: {fileID: 1901210475}
-  _lightPower: 8
-  _mouseFollowObj: {fileID: 882437236}
 --- !u!54 &899050334
 Rigidbody:
   m_ObjectHideFlags: 0
