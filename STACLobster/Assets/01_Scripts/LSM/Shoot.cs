@@ -66,22 +66,6 @@ public class Shoot : MonoBehaviour
         
     }
 
-    public void NormalLaser()
-    {
-        _lineRenderer.SetPosition(0, firePos.position);
-        //Debug.DrawRay(firePos.position, firePos.forward*lightDistance, Color.red);
-        if (
-            Physics.Raycast(firePos.position, firePos.forward, out _hit, laserDistance, layerMask))
-        {
-            _lineRenderer.SetPosition(1, _hit.point);
-
-        }
-        else
-        {
-            _lineRenderer.SetPosition(1, firePos.position + (transform.forward * laserDistance));
-        }
-    }
-
 
     public IEnumerator ReflectLaser()
     {
