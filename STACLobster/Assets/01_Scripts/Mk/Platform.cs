@@ -20,7 +20,7 @@ public class Platform : MonoBehaviour
 
     private void Update()
     {
-        if (_playerRigidbody.velocity.y >= Mathf.Epsilon)
+        if (_playerRigidbody.velocity.y >= Mathf.Epsilon || _player.IsDown)
         {
             transform.gameObject.layer = 0;
             _collider.isTrigger = true;

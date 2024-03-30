@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
 {
     public event Action<Vector2> MovementEvent;
+    public event Action<bool> MoveDownEvent;
     public event Action JumpEvent;
     public event Action<bool> BulletTimeEvent;
     public event Action<double> LightRush;
@@ -29,6 +30,14 @@ public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
     {
         Vector2 vec = context.ReadValue<Vector2>();
         MovementEvent?.Invoke(vec);
+    }
+
+    public void OnMoveDown(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            MoveDownEvent?.Invoke(true);
+        else if (context.canceled)
+            MoveDownEvent?.Invoke(false);
     }
 
     public void OnJump(InputAction.CallbackContext context)
