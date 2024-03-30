@@ -1,18 +1,31 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Player : Agent
 {
     [SerializeField] private InputReader _inputReader;
     private Camera _main;
 
+    #region Lights
+
+    /// <summary>
+    /// Light Laser Object
+    /// </summary>
+    //[SerializeField] private GameObject _lightObj;
+
+    #endregion
+
+    #region Object
+
+    private Transform _visual;
+
+    #endregion
+
     #region Move related variables
     
     [SerializeField] private float _moveSpeed = 5f, _jumpPower = 7f, _forceGravity = 15f;
+    public bool IsDown { get; private set; }
     
     #endregion
 
@@ -46,6 +59,12 @@ public class Player : Agent
         _rigidbody = GetComponent<Rigidbody>();
         
         # endregion
+
+        #region Object
+
+        _visual = transform.Find("Visual").GetComponent<Transform>();
+
+        #endregion
         
         # region Input
         
@@ -67,6 +86,7 @@ public class Player : Agent
     private new void Awake()
     {
         Initalize();
+        print(_visual);
     }
 
     private void Update()
@@ -79,12 +99,6 @@ public class Player : Agent
         GravityCalculate();
         Movement();
     }
-
-    private void Movement()
-    {
-        Vector2 inputVector = _inputReader._playerActions.Player.Movement.ReadValue<Vector2>();
-        _rigidbody.velocity = new Vector2(inputVector.x * _moveSpeed, _rigidbody.velocity.y);
-    }
     
     #endregion
     
@@ -93,11 +107,16 @@ public class Player : Agent
     private void BulletTimeHandle(bool isPress)
     {
         Time.timeScale = isPress ? 0.4f : 1f;
+        
+        // 일단 여기다가 빛변신 움직임 구현
+
+        if (isPress) return;
+        LightMove();
     }
     
     private void MouseMoveHandle()
     {
-        
+        // 마우스 좌표에 의해 빛 발사
     }
     
     private void JumpHandle()
@@ -111,10 +130,39 @@ public class Player : Agent
         _rigidbody.velocity = velocity;
     }
     
-    public bool IsDown { get; private set; }
-    
     #endregion
+
+    #region MoveMethod
+
+
+    private void Movement()
+    {
+        if (_isLightMove) return;
+        
+        Vector2 inputVector = _inputReader._playerActions.Player.Movement.ReadValue<Vector2>();
+        _rigidbody.velocity = new Vector2(inputVector.x * _moveSpeed, _rigidbody.velocity.y);
+    }
     
+    private bool _isLightMove;
+    [SerializeField] private float _lightSpeed = 8f;
+
+    private void LightMove()
+    {
+        _isLightMove = true;
+        
+        _visual.gameObject.SetActive(false);
+        Vector2 vec = GetMousePos();
+        _rigidbody.AddForce(vec.normalized * _lightSpeed, ForceMode.Impulse);
+        StartCoroutine(LightMoveDelay());
+
+    }
+    
+    private IEnumerator LightMoveDelay()
+    {
+        yield return new WaitForSeconds(1.2f);
+        _visual.gameObject.SetActive(true);
+        _isLightMove = false;
+    }
     
     public void SetPosition(Vector3 movement) //보류
     {
@@ -126,6 +174,9 @@ public class Player : Agent
         }
     }
 
+    #endregion
+    
+
     // 이 함수는 new input system이 대체 가능 
     // 나중에 삭제 예정
     private Vector3 GetMousePos()
@@ -133,12 +184,6 @@ public class Player : Agent
         Vector3 mousePos = Camera.main!.ScreenToWorldPoint(
             new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.farClipPlane));
         return mousePos;
-    }
-
-    private Vector3 MousePositionCalculate()
-    {
-        Vector3 mousePos = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
-        return new Vector3(mousePos.x, mousePos.y);
     }
 
     private void GravityCalculate()
