@@ -28,6 +28,11 @@ public class EnemyIdleState : EnemyState
     {
         base.UpdateState();
 
+        if (_enemy.ChaseRangeCast() != Vector3.zero)
+        {
+            _stateMachine.ChangeState(EnemyStateEnum.Chase);
+        }
+
         Move();
 
         currentTime = Time.time;
