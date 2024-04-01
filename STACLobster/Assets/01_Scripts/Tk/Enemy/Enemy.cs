@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum EnemyStateEnum
@@ -18,13 +17,12 @@ public abstract class Enemy : MonoBehaviour
     public float moveSpeed;
     public float changeDirTime;
     public Vector2 randomDirection;
+    public Vector3 playerPos;
 
     public Rigidbody Rigid { get; private set; }
     public EnemyStateMachine StateMachine { get; protected set; }
 
     public bool CanStateChangeable { get; private set; } = true;
-    public bool PlayerInRange { get; private set; } = false;
-    
     public virtual void Awake()
     {
         Transform visualTrm = transform.Find("Visual");
@@ -66,8 +64,25 @@ public abstract class Enemy : MonoBehaviour
 
     }
 
-    public virtual void ChaseRangeCast()
+    public virtual Vector3 ChaseRangeCast()
     {
-
+        playerPos = Vector3.zero;
+        Collider[] playerInRange = Physics.OverlapSphere(transform.position,
+            attackRange);
+        if(playerInRange.Length > 0)
+        {
+            foreach (Collider hit in playerInRange)
+            {
+                if (hit.transform.TryGetComponent<TTesstt>(out TTesstt ts))
+                {
+                    playerPos = ts.transform.position;
+                }
+            }
+        }
+        else
+        {
+            playerPos = Vector3.zero;
+        }
+        return playerPos;
     }
 }
