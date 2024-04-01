@@ -739,8 +739,8 @@ VisualEffect:
   m_GameObject: {fileID: 448673960}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: 9caad8151f3fd5e438167339ba2e1cea, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventName: 
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 0
   m_AllowInstancing: 1
@@ -766,7 +766,7 @@ VisualEffect:
         m_Overridden: 1
     m_Vector4f:
       m_Array:
-      - m_Value: {x: 3974.6565, y: 2850.1643, z: 0, w: 0}
+      - m_Value: {x: 200.12816, y: 93.9973, z: 1.1327845, w: 0}
         m_Name: ParticaleColor
         m_Overridden: 1
     m_Uint:
