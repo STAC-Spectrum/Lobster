@@ -19,6 +19,7 @@ public abstract class Enemy : MonoBehaviour
     public Vector2 randomDirection;
     public Vector3 playerPos;
 
+    public GroundChecker checker;
     public Rigidbody Rigid { get; private set; }
     public EnemyStateMachine StateMachine { get; protected set; }
 

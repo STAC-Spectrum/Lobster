@@ -14,7 +14,12 @@ public class Enemy1 : Enemy
     private void Update()
     {
         StateMachine.CurrentState.UpdateState();
-        
+
+        if (!checker.CheckGround())
+        {
+            moveSpeed *= -1;
+        }
+
         ChaseRangeCast();
     }
 
