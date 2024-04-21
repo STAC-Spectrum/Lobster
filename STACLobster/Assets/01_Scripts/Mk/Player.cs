@@ -47,19 +47,21 @@ public class Player : Agent
     private void Initalize()
     {
         _main = Camera.main;
-        
+
         _rigidbody = GetComponent<Rigidbody>();
         _visual = transform.Find("Visual").GetComponent<Transform>();
-        
+
         PlayerInput playerInput = new PlayerInput();
         playerInput.Player.Enable();
-        
+
         _testLight.SetActive(false);
-        
+
         #region Events
 
         _inputReader.JumpEvent += JumpHandle;
         _inputReader.BulletTimeEvent += BulletTimeHandle;
+        _inputReader.AttackEvent += AttackHandle;
+
         MouseMoveEvent += MouseMoveHandle;
 
         #endregion
@@ -74,7 +76,7 @@ public class Player : Agent
     private void Update()
     {
         IsDown = _inputReader._playerActions.Player.MoveDown.IsPressed();
-        
+
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100, raycastMask))
         {
@@ -87,7 +89,7 @@ public class Player : Agent
     [SerializeField] private LayerMask raycastMask;
     [SerializeField] private float _lightPower;
     [SerializeField] private GameObject _testTargetMouse;
-    
+
     private void MoveToMousePos()
     {
         RaycastHit hit;
@@ -96,7 +98,8 @@ public class Player : Agent
             Vector3 dir = hit.point - transform.position;
             dir.z = 0;
             dir.Normalize();
-            _rigidbody.AddForce(dir * _lightPower, ForceMode.Impulse);
+            _rigidbody.velocity = dir * _lightPower;
+            //_rigidbody.AddForce(dir * _lightPower, ForceMode.Impulse);
         }
     }
 
@@ -104,7 +107,7 @@ public class Player : Agent
     {
         GravityCalculate();
         Movement();
-        
+
     }
 
     #endregion
@@ -145,8 +148,7 @@ public class Player : Agent
     private void Movement()
     {
         if (_isLightMove) return;
-        
-        print("움직임");
+
         Vector2 inputVector = _inputReader._playerActions.Player.Movement.ReadValue<Vector2>();
         _rigidbody.velocity = new Vector2(inputVector.x * _moveSpeed, _rigidbody.velocity.y);
     }
@@ -159,17 +161,17 @@ public class Player : Agent
     private void LightMove()
     {
         if (_isLightMove) return;
-        
+
         _visual.gameObject.SetActive(false);  // 캐릭터 숨기고
         _testLight.SetActive(true); // 빛 이펙트 보이고
         _isLightMove = true;
         _rigidbody.useGravity = false;  // 중력 제거
-        
+
         MoveToMousePos();
         StartCoroutine(LightMoveDelay());
 
     }
-    
+
     private IEnumerator LightMoveDelay()
     {
         yield return new WaitForSeconds(1.2f);
@@ -180,6 +182,50 @@ public class Player : Agent
     }
     #endregion
 
+
+    //? 일단 급한 불 끄는 격으로
+    //TODO : 프로토타입 끝나고 삭제
+
+    [Header("Attack Value")]
+    //* 적 체력을 100정도로
+    /// <summary>
+    /// Basic Player Attack Damage = 20
+    /// </summary>
+    public float _playerAttackDamage = 20;
+    /// <summary>
+    /// Player Attack Count
+    /// </summary>
+    private int _playerAttackCount = 0;
+
+
+    public int PlayerAttackCount
+    {
+        get { return _playerAttackCount; }
+        set { _playerAttackCount = value; }
+    }
+
+    [Header("Ray Value")]
+    [SerializeField] private float _rayRadius = 5;
+    [SerializeField] private LayerMask _enemyLayer;
+    [SerializeField] private float _rayMaxDistance = 3;
+
+
+    public void AttackHandle()
+    {
+        // 일단 플레이어 기본으로 주먹을 만들어야 함 관련 변수는 위에 추가하기로 하고
+        print("클릭");
+
+        if (Physics.SphereCast(
+            transform.position,
+            _rayRadius, Vector2.right, out RaycastHit hit, _rayMaxDistance, _enemyLayer))
+        {
+            // 맞으면
+            // 에너미한테 데미지 주기
+
+            _playerAttackCount++;   // hit count 상승으로 다음 데미지 상승
+        }
+
+    }
 
     // 이 함수는 new input system이 대체 가능 
     // 나중에 삭제 예정

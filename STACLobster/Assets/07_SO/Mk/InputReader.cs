@@ -12,6 +12,7 @@ public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
     public event Action JumpEvent;
     public event Action<bool> BulletTimeEvent;
     public event Action<double> LightRush;
+    public event Action AttackEvent;
 
     public PlayerInput _playerActions;
 
@@ -22,7 +23,7 @@ public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
             _playerActions = new PlayerInput();
             _playerActions.Player.SetCallbacks(this);
         }
-        
+
         _playerActions.Player.Enable();  //Active Input
     }
 
@@ -57,5 +58,11 @@ public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
     {
         double vec = context.ReadValue<Double>();
         LightRush?.Invoke(vec);
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            AttackEvent?.Invoke();
     }
 }
