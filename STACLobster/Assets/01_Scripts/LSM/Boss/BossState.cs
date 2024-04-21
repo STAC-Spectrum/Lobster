@@ -7,25 +7,25 @@ public class BossState
 
     protected Boss _boss;
     protected BossStateMachine _stateMachine;
-    protected string _animationName;
+    protected int _animationName;
 
     public BossState(Boss boss,BossStateMachine bossStateMachine,string animationName)
     {
         _boss = boss;
         _stateMachine = bossStateMachine;
-        _animationName = animationName;
+        _animationName = Animator.StringToHash( animationName);
     }
 
     public virtual void Enter()
     {
 
-        //_stateMachine
+        _boss.AnimatorCompo.SetBool(_animationName, true);
 
     }
 
     public virtual void Exit()
     {
-
+        _boss.AnimatorCompo.SetBool(_animationName, false);
     }
 
     public virtual void UpdateState()

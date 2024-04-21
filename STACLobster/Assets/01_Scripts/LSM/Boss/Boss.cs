@@ -8,7 +8,6 @@ public class Boss : MonoBehaviour
 {
 
     [Header("Setting")]
-    public float moveSpeed;
     public float runDistance;
     public LayerMask plyaerMask;
 
@@ -19,20 +18,25 @@ public class Boss : MonoBehaviour
 
     public BossStateMachine StateMachine { get; set; }
 
-    private Collider[] detectionCollider;
-    private Animator animator;
+    public Animator AnimatorCompo { get; set; }
 
-    private IMovement movemetnCompo;
+    private Collider[] detectionCollider;
+    public  IMovement MovemetCompo { get; set; }
+    [HideInInspector] public Transform target;
+    
 
     
 
 
     private void Awake()
     {
-        movemetnCompo = GetComponent<IMovement>();
-        movemetnCompo.Initialize(this);
+        StateMachine = new BossStateMachine();
+        MovemetCompo = GetComponent<IMovement>();
+        MovemetCompo.Initialize(this);
+        Transform visual = transform.Find("Visual");
+        AnimatorCompo = visual.GetComponent<Animator>();
         StateMachine.AddState(BossStateEnum.Walk, new BossWalkState(this,StateMachine,"Walk"));
-        StateMachine.AddState(BossStateEnum.Idle, new BossWalkState(this,StateMachine,"Idle"));
+        StateMachine.AddState(BossStateEnum.Idle, new BossIdleState(this,StateMachine,"Idle"));
     }
     private void Start()
     {
@@ -40,12 +44,17 @@ public class Boss : MonoBehaviour
 
     }
 
-    public virtual Collider IsRangeDetection()
+    private void Update()
+    {
+        StateMachine.CurrentState.UpdateState();
+    }
+
+    public virtual Collider IsPlayerDetection()
     {
 
         detectionCollider = Physics.OverlapSphere(transform.position, runDistance, plyaerMask);
 
-        return detectionCollider.Length >= 1 ? detectionCollider[1] : null;
+        return detectionCollider.Length >= 1 ? detectionCollider[0] : null;
 
     }
 
@@ -54,8 +63,15 @@ public class Boss : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position,1f);
+        Gizmos.DrawWireSphere(transform.position, runDistance);
     }
 
+    //private void OnDrawGizmosSelected()
+    //{
+
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawWireSphere(transform.position, runDistance);
+
+    //}
 
 }

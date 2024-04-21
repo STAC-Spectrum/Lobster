@@ -18,6 +18,18 @@ public class BossMovement : MonoBehaviour,IMovement
     }
 
 
+    public void Move(Vector3 vec)
+    {
+
+        rigid.velocity = vec * moveSpeed;
+    }
+
+    public void Stop()
+    {
+        rigid.velocity = Vector3.zero;
+    }
+
+
     //private void Update()
     //{
     //    public Collider = _boss.IsRangeDetection();
@@ -36,10 +48,6 @@ public class BossMovement : MonoBehaviour,IMovement
 
     //}
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 10);
-    }
+
 
 }
