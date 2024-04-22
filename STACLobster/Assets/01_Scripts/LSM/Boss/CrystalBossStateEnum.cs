@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BossStateEnum 
+public enum CrystalBossStateEnum 
 {
     
     Idle,
-    Walk,
+    Laser,
     DashAttack,
     JumpAttack,
 

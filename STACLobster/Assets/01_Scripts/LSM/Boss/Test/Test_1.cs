@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface TestInterface
 {
-    public void Initialize(Boss boss);
+    public void Initialize(CrystalBoss boss);
 }
 
 public class Test_1 : MonoBehaviour
