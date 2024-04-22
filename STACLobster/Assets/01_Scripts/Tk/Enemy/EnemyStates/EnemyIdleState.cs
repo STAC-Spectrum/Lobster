@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyIdleState : EnemyState
@@ -22,10 +23,16 @@ public class EnemyIdleState : EnemyState
     {
         base.UpdateState();
 
+        if(_enemy.playerPos != Vector3.zero) 
+        {
+            Debug.Log("Transition to Chase State");
+            _enemy.StateMachine.ChangeState(EnemyStateEnum.Chase);
+        }
+
         Move();
     }
     private void Move()
     {
-        _enemy.Rigid.velocity = Vector3.right * _enemy.moveSpeed;
+        _enemy.Rigid.velocity = _enemy.transform.right * _enemy.moveSpeed;
     }
 }

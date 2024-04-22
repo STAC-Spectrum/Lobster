@@ -21,7 +21,7 @@ public abstract class EnemyState
 
     public virtual void Enter()
     {
-
+        _endTriggerCalled = false;
     }
 
     public virtual void Exit()

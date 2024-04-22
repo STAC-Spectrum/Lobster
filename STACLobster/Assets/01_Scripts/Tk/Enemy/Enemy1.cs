@@ -11,28 +11,13 @@ public class Enemy1 : Enemy
         StateMachine.Initialize(EnemyStateEnum.Idle, this);
     }
 
-    private void Update()
-    {
-        StateMachine.CurrentState.UpdateState();
-
-        if (!checker.CheckGround())
-        {
-            moveSpeed *= -1;
-        }
-
-        ChaseRangeCast();
-    }
-
-    public override Vector3 ChaseRangeCast()
-    {
-        base.ChaseRangeCast();
-        return base.ChaseRangeCast();
-    }
-
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position,
+            _chaseRange);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position,
-            attackRange);
+            _attackRange);
     }
 }

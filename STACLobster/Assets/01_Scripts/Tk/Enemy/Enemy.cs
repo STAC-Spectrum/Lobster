@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public enum EnemyStateEnum
@@ -12,22 +13,39 @@ public enum EnemyStateEnum
 
 public abstract class Enemy : MonoBehaviour
 {
+    #region 설정 해줘야 하는 값들
     [Header("Setting Values")]
-    [SerializeField] protected float attackRange;
+    [SerializeField] protected float _chaseRange;
+    [SerializeField] protected float _attackRange;
+    [SerializeField] private Transform _footTrm;
     public float moveSpeed;
+    public float chaseSpeed;
+    public float defaultMoveSpeed;
     public float changeDirTime;
     public Vector2 randomDirection;
     public Vector3 playerPos;
+    public bool isChasing = false;
+    protected Transform _visualTrm;
+    private bool _isFlip = false;
+    #endregion
 
-    public GroundChecker checker;
-    public Rigidbody Rigid { get; private set; }
-    public EnemyStateMachine StateMachine { get; protected set; }
+    #region 벽이랑 땅 감지해주는 애들
+    [Header("Checkers")] // 벽과 땅을 탐지하는 장치들
+    public GroundChecker groundChecker;
+    public WallChecker wallChecker;
+    #endregion
 
-    public bool CanStateChangeable { get; private set; } = true;
+    #region 프로퍼티들
+    [HideInInspector] public Rigidbody Rigid { get; private set; }
+    [HideInInspector] public EnemyStateMachine StateMachine { get; protected set; }
+    [HideInInspector] public bool CanStateChangeable { get; private set; } = true;
+    #endregion 프로퍼티들
+
     public virtual void Awake()
     {
-        Transform visualTrm = transform.Find("Visual");
+        _visualTrm = transform.Find("Visual");
         Rigid = GetComponent<Rigidbody>();
+        defaultMoveSpeed = moveSpeed;
 
         StateMachine = new EnemyStateMachine();
 
@@ -47,6 +65,21 @@ public abstract class Enemy : MonoBehaviour
                 Debug.LogError(e.Message);
             }
         }
+    }
+
+    private void Update()
+    {
+        StateMachine.CurrentState.UpdateState();
+
+        if (!groundChecker.CheckGround()) // 앞에 땅이 없는 상황에는 회전
+        {
+            RotateEnemy();         
+        }
+        else if (wallChecker.CheckWall()) // 앞이 벽으로 막혀있는 상황에는 회전
+        {
+            RotateEnemy();
+        }
+        ChaseRangeCast(); // 범위 내 적을 체크해줌
     }
 
     public Coroutine StartDelayCallback(float time, Action action)
@@ -69,7 +102,7 @@ public abstract class Enemy : MonoBehaviour
     {
         playerPos = Vector3.zero;
         Collider[] playerInRange = Physics.OverlapSphere(transform.position,
-            attackRange);
+            _chaseRange);
         if(playerInRange.Length > 0)
         {
             foreach (Collider hit in playerInRange)
@@ -85,5 +118,46 @@ public abstract class Enemy : MonoBehaviour
             playerPos = Vector3.zero;
         }
         return playerPos;
+    }
+
+    public virtual bool AttackRangeCast()
+    {
+        Collider[] playerInRange = Physics.OverlapSphere(transform.position,
+            _attackRange);
+        if (playerInRange.Length > 0)
+        {
+            foreach (Collider hit in playerInRange)
+            {
+                if (hit.transform.TryGetComponent<TTesstt>(out TTesstt ts))
+                {
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            return false;
+        }
+        return false;
+    }
+
+    public void RotateEnemy()
+    {
+        if (isChasing) return;
+        if (!_isFlip)
+        {
+            _isFlip = true;
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+        else
+        {
+            _isFlip = false;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+
+    public void StopImmediately()
+    {
+        Rigid.velocity = Vector3.zero;
     }
 }
