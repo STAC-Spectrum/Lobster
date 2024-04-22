@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 
 
-public class Boss : MonoBehaviour
+public class CrystalBoss : MonoBehaviour
 {
 
     [Header("Setting")]
@@ -12,16 +13,14 @@ public class Boss : MonoBehaviour
     public LayerMask plyaerMask;
 
     [Header("AttackSetting")]
-    public float attackCoolTIme;
-    public float attackDamage;
-    public float attackDistance;
+    public GameObject LaserPrefab;
 
-    public BossStateMachine StateMachine { get; set; }
+    public CrystalBossStateMachine StateMachine { get; set; }
 
     public Animator AnimatorCompo { get; set; }
 
     private Collider[] detectionCollider;
-    public  IMovement MovemetCompo { get; set; }
+    public List<GameObject> prefabList = new List<GameObject>();
     [HideInInspector] public Transform target;
     
 
@@ -30,17 +29,15 @@ public class Boss : MonoBehaviour
 
     private void Awake()
     {
-        StateMachine = new BossStateMachine();
-        MovemetCompo = GetComponent<IMovement>();
-        MovemetCompo.Initialize(this);
+        StateMachine = new CrystalBossStateMachine();
         Transform visual = transform.Find("Visual");
         AnimatorCompo = visual.GetComponent<Animator>();
-        StateMachine.AddState(BossStateEnum.Walk, new BossWalkState(this,StateMachine,"Walk"));
-        StateMachine.AddState(BossStateEnum.Idle, new BossIdleState(this,StateMachine,"Idle"));
+        StateMachine.AddState(CrystalBossStateEnum.Idle, new CrystalBossIdleState(this,StateMachine,"Idle"));
+        StateMachine.AddState(CrystalBossStateEnum.Laser, new CrystalBossLaserPatternState(this,StateMachine,"Laser"));
     }
     private void Start()
     {
-        StateMachine.Initialize(BossStateEnum.Idle,this);
+        StateMachine.Initialize(CrystalBossStateEnum.Idle,this);
 
     }
 
@@ -55,7 +52,18 @@ public class Boss : MonoBehaviour
         detectionCollider = Physics.OverlapSphere(transform.position, runDistance, plyaerMask);
 
         return detectionCollider.Length >= 1 ? detectionCollider[0] : null;
+        
+    }
 
+    public void LaserSpawn(GameObject prefab,int count)
+    {
+        for(int i =0;i<count;++i)
+        {
+            GameObject obj = Instantiate(prefab, transform);
+            obj.transform.localScale = Vector3.zero;
+            prefabList.Add(obj);
+
+        }
     }
 
 
@@ -66,12 +74,5 @@ public class Boss : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, runDistance);
     }
 
-    //private void OnDrawGizmosSelected()
-    //{
-
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawWireSphere(transform.position, runDistance);
-
-    //}
 
 }
