@@ -151,6 +151,7 @@ public class Player : Agent
 
         Vector2 inputVector = _inputReader._playerActions.Player.Movement.ReadValue<Vector2>();
         _rigidbody.velocity = new Vector2(inputVector.x * _moveSpeed, _rigidbody.velocity.y);
+        transform.right = inputVector;
     }
 
     private bool _isLightMove;
@@ -172,9 +173,11 @@ public class Player : Agent
 
     }
 
+    [SerializeField] private float _lightMoveDelayTime = 1.2f;
+
     private IEnumerator LightMoveDelay()
     {
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(_lightMoveDelayTime);
         _visual.gameObject.SetActive(true);
         _testLight.SetActive(false);
         _rigidbody.useGravity = true;
@@ -205,26 +208,33 @@ public class Player : Agent
     }
 
     [Header("Ray Value")]
-    [SerializeField] private float _rayRadius = 5;
+    [SerializeField] private float _rayRadius = 5f;
     [SerializeField] private LayerMask _enemyLayer;
-    [SerializeField] private float _rayMaxDistance = 3;
+    [SerializeField] private float _rayMaxDistance = 3f;
+    [SerializeField] private float _rayInterpolation = 0.5f;
 
 
     public void AttackHandle()
     {
         // 일단 플레이어 기본으로 주먹을 만들어야 함 관련 변수는 위에 추가하기로 하고
-        print("클릭");
 
+        Vector3 startPos = GetRayStartPos();
         if (Physics.SphereCast(
-            transform.position,
+            startPos,
             _rayRadius, Vector2.right, out RaycastHit hit, _rayMaxDistance, _enemyLayer))
         {
+            print("피격!!!");
             // 맞으면
             // 에너미한테 데미지 주기
 
             _playerAttackCount++;   // hit count 상승으로 다음 데미지 상승
         }
 
+    }
+
+    private Vector3 GetRayStartPos()
+    {
+        return transform.position + transform.right * -_rayInterpolation * 2;
     }
 
     // 이 함수는 new input system이 대체 가능 
@@ -247,5 +257,12 @@ public class Player : Agent
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, Vector2.down * _maxDistance);
         Gizmos.DrawRay(_mousePos, Vector3.forward * _maxDistance);
+
+        //*
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(GetRayStartPos(), _rayRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(GetRayStartPos() + transform.right * _rayMaxDistance, _rayRadius);
     }
 }
