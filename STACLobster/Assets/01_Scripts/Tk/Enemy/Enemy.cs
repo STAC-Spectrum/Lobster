@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public enum EnemyStateEnum
@@ -8,7 +7,7 @@ public enum EnemyStateEnum
     Idle,
     Chase,
     Attack,
-    Die,
+    Dead,
 }
 
 public abstract class Enemy : MonoBehaviour
@@ -18,13 +17,13 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected float _chaseRange;
     [SerializeField] protected float _attackRange;
     [SerializeField] private Transform _footTrm;
+    public float health;
+    public float lastAttackTime;
+    public float attackCooldown;
     public float moveSpeed;
     public float chaseSpeed;
     public float defaultMoveSpeed;
-    public float changeDirTime;
-    public Vector2 randomDirection;
     public Vector3 playerPos;
-    public bool isChasing = false;
     protected Transform _visualTrm;
     private bool _isFlip = false;
     #endregion
@@ -38,7 +37,8 @@ public abstract class Enemy : MonoBehaviour
     #region 프로퍼티들
     [HideInInspector] public Rigidbody Rigid { get; private set; }
     [HideInInspector] public EnemyStateMachine StateMachine { get; protected set; }
-    [HideInInspector] public bool CanStateChangeable { get; private set; } = true;
+    [HideInInspector] public bool CanStateChangeable { get; protected set; } = true;
+    [HideInInspector] public bool IsDead { get; protected set; } = false;
     #endregion 프로퍼티들
 
     public virtual void Awake()
@@ -80,6 +80,7 @@ public abstract class Enemy : MonoBehaviour
             RotateEnemy();
         }
         ChaseRangeCast(); // 범위 내 적을 체크해줌
+        Dead();
     }
 
     public Coroutine StartDelayCallback(float time, Action action)
@@ -143,7 +144,6 @@ public abstract class Enemy : MonoBehaviour
 
     public void RotateEnemy()
     {
-        if (isChasing) return;
         if (!_isFlip)
         {
             _isFlip = true;
@@ -153,6 +153,17 @@ public abstract class Enemy : MonoBehaviour
         {
             _isFlip = false;
             transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+
+    public void Dead()
+    {
+        if(health <= 0 && !IsDead)
+        {
+            Debug.Log("Transition to Dead State");
+            IsDead = true;
+            StateMachine.ChangeState(EnemyStateEnum.Dead);
+            CanStateChangeable = false;
         }
     }
 

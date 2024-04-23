@@ -445,13 +445,13 @@ MonoBehaviour:
   _chaseRange: 10
   _attackRange: 2
   _footTrm: {fileID: 1113802479}
+  health: 10
+  lastAttackTime: 0
+  attackCooldown: 1.5
   moveSpeed: 3
   chaseSpeed: 5
   defaultMoveSpeed: 0
-  changeDirTime: 3
-  randomDirection: {x: 0, y: 0}
   playerPos: {x: 0, y: 0, z: 0}
-  isChasing: 0
   groundChecker: {fileID: 585224121}
   wallChecker: {fileID: 1762377941}
 --- !u!54 &605290044
@@ -1143,5 +1143,5 @@ SceneRoots:
   - {fileID: 605290042}
   - {fileID: 511991078}
   - {fileID: 1252203062}
-  - {fileID: 1076670603}
   - {fileID: 1946920552}
+  - {fileID: 1076670603}

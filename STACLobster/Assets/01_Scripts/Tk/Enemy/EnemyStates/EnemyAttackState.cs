@@ -18,10 +18,15 @@ public class EnemyAttackState : EnemyState
     {
         base.UpdateState();
 
+        if (_endTriggerCalled)
+        {
+            _stateMachine.ChangeState(EnemyStateEnum.Idle);
+        }
+
         if (!_enemy.AttackRangeCast())
         {
             Debug.Log("Transition to Chase State");
-            _enemy.StateMachine.ChangeState(EnemyStateEnum.Chase);
+            _stateMachine.ChangeState(EnemyStateEnum.Chase);
         }
 
         _enemy.StopImmediately();
@@ -29,7 +34,8 @@ public class EnemyAttackState : EnemyState
 
     public override void Exit()
     {
-        base.Exit();
         _endTriggerCalled = true;
+        _enemy.lastAttackTime = Time.time;
+        base.Exit();
     }
 }

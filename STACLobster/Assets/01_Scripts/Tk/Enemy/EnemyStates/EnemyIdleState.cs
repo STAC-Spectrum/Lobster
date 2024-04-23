@@ -26,7 +26,7 @@ public class EnemyIdleState : EnemyState
         if(_enemy.playerPos != Vector3.zero) 
         {
             Debug.Log("Transition to Chase State");
-            _enemy.StateMachine.ChangeState(EnemyStateEnum.Chase);
+            _stateMachine.ChangeState(EnemyStateEnum.Chase);
         }
 
         Move();
