@@ -151,7 +151,9 @@ public class Player : Agent
 
         Vector2 inputVector = _inputReader._playerActions.Player.Movement.ReadValue<Vector2>();
         _rigidbody.velocity = new Vector2(inputVector.x * _moveSpeed, _rigidbody.velocity.y);
-        transform.right = inputVector;
+
+        if (inputVector != Vector2.zero)
+            transform.right = new Vector3(_rigidbody.velocity.x, 0, 0);
     }
 
     private bool _isLightMove;
@@ -194,17 +196,28 @@ public class Player : Agent
     /// <summary>
     /// Basic Player Attack Damage = 20
     /// </summary>
-    public float _playerAttackDamage = 20;
+    public int _playerAttackDamage = 20;
     /// <summary>
     /// Player Attack Count
     /// </summary>
     private int _playerAttackCount = 0;
 
 
-    public int PlayerAttackCount
+    public int PlayerAttackDamage
     {
-        get { return _playerAttackCount; }
-        set { _playerAttackCount = value; }
+        get { return _playerAttackDamage; }
+        set
+        {
+            if (_playerAttackDamage >= 30)
+            {
+                _playerAttackDamage += 10;
+            }
+            else
+            {
+                _playerAttackDamage = value;
+            }
+            _playerAttackDamage = Mathf.Clamp(_playerAttackDamage, 20, 40);
+        }
     }
 
     [Header("Ray Value")]
@@ -221,15 +234,21 @@ public class Player : Agent
         Vector3 startPos = GetRayStartPos();
         if (Physics.SphereCast(
             startPos,
-            _rayRadius, Vector2.right, out RaycastHit hit, _rayMaxDistance, _enemyLayer))
+            _rayRadius, transform.right, out RaycastHit hit, _rayMaxDistance, _enemyLayer))
         {
             print("피격!!!");
             // 맞으면
             // 에너미한테 데미지 주기
 
-            _playerAttackCount++;   // hit count 상승으로 다음 데미지 상승
+            AttackDamageCombo();  // hit count 상승으로 다음 데미지 상승
         }
 
+    }
+
+    private void AttackDamageCombo()
+    {
+        PlayerAttackDamage += 5;  // 적 타격시 상승 데미지 폭 / 데미지가 30일 경우 10 상승 / 최대 40 데미지
+        // TODO : 어택 콤보 스택 계산 필요함 / 어떻게 콤보 이을것 이고 끊을지 만들어야함
     }
 
     private Vector3 GetRayStartPos()

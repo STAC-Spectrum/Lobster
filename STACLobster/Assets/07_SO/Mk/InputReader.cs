@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "SO/InputReader")]
 public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
 {
-    public event Action<Vector2> MovementEvent;
     public event Action<bool> MoveDownEvent;
     public event Action JumpEvent;
     public event Action<bool> BulletTimeEvent;
@@ -29,8 +28,7 @@ public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
 
     public void OnMovement(InputAction.CallbackContext context)
     {
-        Vector2 vec = context.ReadValue<Vector2>();
-        MovementEvent?.Invoke(vec);
+
     }
 
     public void OnMoveDown(InputAction.CallbackContext context)
