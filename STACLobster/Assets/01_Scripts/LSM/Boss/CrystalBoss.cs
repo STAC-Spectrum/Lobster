@@ -22,9 +22,10 @@ public class CrystalBoss : MonoBehaviour
     private Collider[] detectionCollider;
     public List<GameObject> prefabList = new List<GameObject>();
     [HideInInspector] public Transform target;
-    
+    [HideInInspector] public Transform parentObj;
 
-    
+
+
 
 
     private void Awake()
@@ -32,6 +33,7 @@ public class CrystalBoss : MonoBehaviour
         StateMachine = new CrystalBossStateMachine();
         Transform visual = transform.Find("Visual");
         AnimatorCompo = visual.GetComponent<Animator>();
+        parentObj = transform.Find("LaserParent");
         StateMachine.AddState(CrystalBossStateEnum.Idle, new CrystalBossIdleState(this,StateMachine,"Idle"));
         StateMachine.AddState(CrystalBossStateEnum.Laser, new CrystalBossLaserPatternState(this,StateMachine,"Laser"));
     }
@@ -57,16 +59,16 @@ public class CrystalBoss : MonoBehaviour
 
     public void LaserSpawn(GameObject prefab,int count)
     {
-        for(int i =0;i<count;++i)
+        for (int i =0;i<count;++i)
         {
             GameObject obj = Instantiate(prefab, transform);
-            obj.transform.localScale = Vector3.zero;
+            obj.transform.parent = parentObj;
+            obj.transform.localScale = Vector3.one * 0.1f;
+            obj.SetActive(false);
             prefabList.Add(obj);
-
+            
         }
     }
-
-
 
     private void OnDrawGizmos()
     {
