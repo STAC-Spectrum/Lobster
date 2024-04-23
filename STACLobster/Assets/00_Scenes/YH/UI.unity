@@ -4387,6 +4387,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2092431172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2092431174}
+  - component: {fileID: 2092431173}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &2092431173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092431172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11b08b5c41eafb449911efe336c22670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _titleMusic: {fileID: 0}
+  _gameMusic: {fileID: 0}
+  _fadeTimerInterval: 0.001
+  _attackImpactSource: {fileID: 0}
+  _shotImpactSource: {fileID: 0}
+  _soundMixer: {fileID: 24100000, guid: a43ff64f856f43847aeef355130fa00c, type: 2}
+  _totalSlider: {fileID: 285594385}
+  _musicSlider: {fileID: 1286441563}
+  _effectSlider: {fileID: 188382435}
+--- !u!4 &2092431174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092431172}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1067.4811, y: 540.87646, z: -3.4388747}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2109971062
 GameObject:
   m_ObjectHideFlags: 0
@@ -4814,3 +4867,4 @@ SceneRoots:
   - {fileID: 1768165951}
   - {fileID: 1836825889}
   - {fileID: 648197558}
+  - {fileID: 2092431174}
