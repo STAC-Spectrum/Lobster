@@ -7,12 +7,12 @@ public class Ball : MonoBehaviour
 
     public Vector3 direction;
     public float speed;
-    private Collider collider;
+    private Collider sphereCollider;
 
 
     private void Awake()
     {
-        collider = GetComponentInChildren<SphereCollider>();
+        sphereCollider = GetComponentInChildren<SphereCollider>();
     }
 
     private void Start()

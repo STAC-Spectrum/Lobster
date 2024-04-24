@@ -11,6 +11,8 @@ public class CrystalBossState
     protected int _animationName;
     protected bool isPattern;
     protected Sequence mySequence = DOTween.Sequence();
+    public List<GameObject> prefabList = new List<GameObject>();
+
     public CrystalBossState(CrystalBoss boss,CrystalBossStateMachine bossStateMachine,string animationName)
     {
         _boss = boss;
