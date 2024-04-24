@@ -13,14 +13,13 @@ public class CrystalBoss : MonoBehaviour
     public LayerMask plyaerMask;
 
     [Header("AttackSetting")]
-    public GameObject LaserPrefab;
+    public List<GameObject> PrefabList  = new List<GameObject>();
 
     public CrystalBossStateMachine StateMachine { get; set; }
 
     public Animator AnimatorCompo { get; set; }
 
     private Collider[] detectionCollider;
-    public List<GameObject> prefabList = new List<GameObject>();
     [HideInInspector] public Transform target;
     [HideInInspector] public Transform parentObj;
 
@@ -33,7 +32,7 @@ public class CrystalBoss : MonoBehaviour
         StateMachine = new CrystalBossStateMachine();
         Transform visual = transform.Find("Visual");
         AnimatorCompo = visual.GetComponent<Animator>();
-        parentObj = transform.Find("LaserParent");
+        //parentObj = transform.Find("LaserParent");
         StateMachine.AddState(CrystalBossStateEnum.Idle, new CrystalBossIdleState(this,StateMachine,"Idle"));
         StateMachine.AddState(CrystalBossStateEnum.Laser, new CrystalBossLaserPatternState(this,StateMachine,"Laser"));
     }
@@ -57,15 +56,16 @@ public class CrystalBoss : MonoBehaviour
         
     }
 
-    public void LaserSpawn(GameObject prefab,int count)
+    public void PrefabSpawn(GameObject prefab,string parent,int count,CrystalBossState state)
     {
         for (int i =0;i<count;++i)
         {
+            parentObj = transform.Find(parent);
             GameObject obj = Instantiate(prefab, transform);
-            obj.transform.parent = parentObj;
-            obj.transform.localScale = Vector3.one * 0.1f;
+            obj.transform.parent = parentObj.transform;
+            obj.transform.localScale = new Vector3(0.1f,2,0.1f);
             obj.SetActive(false);
-            prefabList.Add(obj);
+            state.prefabList.Add(obj);
             
         }
     }

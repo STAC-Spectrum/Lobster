@@ -8,6 +8,7 @@ public class CrystalBossLaserPatternState : CrystalBossState
 {
     bool isLaser;
     float time = 0;
+    //List<GameObject> LaserList = new List<GameObject>();
     public CrystalBossLaserPatternState(CrystalBoss boss, CrystalBossStateMachine bossStateMachine, string animationName) : base(boss, bossStateMachine, animationName)
     {
     }
@@ -24,30 +25,37 @@ public class CrystalBossLaserPatternState : CrystalBossState
 
     private IEnumerator Spawn()
     {
-        _boss.LaserSpawn(_boss.LaserPrefab, 6);
+        _boss.PrefabSpawn(_boss.PrefabList[0], "LaserParent", 6,this);
         int angle = 0;
-        for (int i = 0; i < _boss.prefabList.Count; ++i)
+        for (int i = 0; i < prefabList.Count; ++i)
         {
-            angle = 360 / _boss.prefabList.Count * i;
-            _boss.prefabList[i].transform.rotation = Quaternion.Euler(new Vector3(angle, 0, 0));
-            _boss.prefabList[i].transform.Translate(Vector3.up * 3);
-            _boss.prefabList[i].transform.DOScaleY(2, 0.1f);
-            _boss.prefabList[i].SetActive(true);
+            angle = 360 / prefabList.Count * i;
+            prefabList[i].transform.rotation = Quaternion.Euler(new Vector3(angle, 0, 0));
+            prefabList[i].transform.Translate(Vector3.up * 3);
+            //s.prefabList[i].transform.DOScaleY(2, 0.1f);
+            prefabList[i].SetActive(true);
 
         }
         yield return new WaitForSeconds(1f);
-        for(int i = 0; i < _boss.prefabList.Count; ++i)
+        for(int i = 0; i < prefabList.Count; ++i)
         {
-            _boss.prefabList[i].transform.DOScale(new Vector3(1,2,1), 0.1f);
+            prefabList[i].transform.DOScale(new Vector3(1,2,1), 0.1f);
 
         }
         yield return new WaitForSeconds(1.5f);
         isLaser = true;
         
+    }
 
-        
+    private IEnumerator StopLaserPattern()
+    {
+        for(int i =0;i<prefabList.Count;++i)
+        {
 
-
+            prefabList[i].transform.DOScale(new Vector3(0.1f, 2, 0.1f), 1);
+        }
+        yield return new WaitForSeconds(1f);
+        _boss.parentObj.gameObject.SetActive(false);
     }
 
     public override void Exit()
@@ -69,6 +77,7 @@ public class CrystalBossLaserPatternState : CrystalBossState
             {
                 isLaser = false;
                 time = 0;
+                _boss.StartCoroutine(StopLaserPattern());
 
             }
         }
