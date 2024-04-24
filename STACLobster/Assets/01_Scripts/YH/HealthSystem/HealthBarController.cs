@@ -14,6 +14,13 @@ public class HealthBarController : MonoBehaviour
     [SerializeField] private Transform heartsParent;
     [SerializeField] private GameObject heartContainerPrefab;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+        
+    }
+
+
     private void Start()
     {
         // Should I use lists? Maybe :)

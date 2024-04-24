@@ -19,9 +19,9 @@ public class SoundManager : MonoSingleton<SoundManager>
     [SerializeField] private AudioSource _attackImpactSource;
     [SerializeField] private AudioSource _shotImpactSource;
 
-    private void Awake()
+    protected override void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        base.Awake();
     }
 
     //오디오 소스 재생
