@@ -9,7 +9,8 @@ public class CrystalBoss : MonoBehaviour
 {
 
     [Header("Setting")]
-    public float runDistance;
+    public float laserPatternDistance;
+    public Vector3 paillPatternSize;
     public LayerMask plyaerMask;
 
     [Header("AttackSetting")]
@@ -35,6 +36,7 @@ public class CrystalBoss : MonoBehaviour
         //parentObj = transform.Find("LaserParent");
         StateMachine.AddState(CrystalBossStateEnum.Idle, new CrystalBossIdleState(this,StateMachine,"Idle"));
         StateMachine.AddState(CrystalBossStateEnum.Laser, new CrystalBossLaserPatternState(this,StateMachine,"Laser"));
+        StateMachine.AddState(CrystalBossStateEnum.PillarAttack, new CrytalBossPillarPatternState(this,StateMachine,"Pillar"));
     }
     private void Start()
     {
@@ -47,13 +49,22 @@ public class CrystalBoss : MonoBehaviour
         StateMachine.CurrentState.UpdateState();
     }
 
-    public virtual Collider IsPlayerDetection()
+    public virtual Collider IsPlayerSphereDetection()
     {
 
-        detectionCollider = Physics.OverlapSphere(transform.position, runDistance, plyaerMask);
+        detectionCollider = Physics.OverlapSphere(transform.position, laserPatternDistance, plyaerMask);
 
         return detectionCollider.Length >= 1 ? detectionCollider[0] : null;
         
+    }
+
+    public virtual Collider IsPlayerCubeDetection()
+    {
+
+        detectionCollider = Physics.OverlapBox(transform.position, paillPatternSize,Quaternion.identity,plyaerMask);
+
+        return detectionCollider.Length >= 1 ? detectionCollider[0] : null;
+
     }
 
     public void PrefabSpawn(GameObject prefab,string parent,int count,CrystalBossState state)
@@ -73,7 +84,9 @@ public class CrystalBoss : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, runDistance);
+        Gizmos.DrawWireSphere(transform.position, laserPatternDistance);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, paillPatternSize);
     }
 
 
