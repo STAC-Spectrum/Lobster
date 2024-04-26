@@ -58,10 +58,10 @@ public class CrystalBoss : MonoBehaviour
         
     }
 
-    public virtual Collider IsPlayerCubeDetection()
+    public virtual Collider IsPlayerCubeDetection(Vector3 boxSize)
     {
 
-        detectionCollider = Physics.OverlapBox(transform.position, paillPatternSize,Quaternion.identity,plyaerMask);
+        detectionCollider = Physics.OverlapBox(transform.position, boxSize, Quaternion.identity,plyaerMask);
 
         return detectionCollider.Length >= 1 ? detectionCollider[0] : null;
 
@@ -86,7 +86,7 @@ public class CrystalBoss : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, laserPatternDistance);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, paillPatternSize);
+        Gizmos.DrawWireCube(transform.position, new Vector3(50,1,100));
     }
 
 

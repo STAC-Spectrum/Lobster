@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class CrystalBossLaserPatternState : CrystalBossState
+public class CrystalBossLaserPatternState : CrystalBossPatternState
 {
     bool isLaser;
     float time = 0;

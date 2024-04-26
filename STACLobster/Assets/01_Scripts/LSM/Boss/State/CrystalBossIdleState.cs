@@ -10,7 +10,7 @@ public class CrystalBossIdleState : CrystalBossState
     public override void UpdateState()
     {
 
-        Collider player = _boss.IsPlayerCubeDetection();
+        Collider player = _boss.IsPlayerSphereDetection();
         if (player == null) return;
         _boss.target = player.transform;
         _stateMachine.ChangeState(CrystalBossStateEnum.PillarAttack);

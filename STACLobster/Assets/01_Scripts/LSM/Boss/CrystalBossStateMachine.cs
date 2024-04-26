@@ -9,7 +9,13 @@ public class CrystalBossStateMachine : MonoBehaviour
         new Dictionary<CrystalBossStateEnum, CrystalBossState>();
 
     public CrystalBossState CurrentState { get; private set; }
+    public List<CrystalBossState> SkillList = new List<CrystalBossState>();
     private CrystalBoss _boss;
+
+    private void Awake()
+    {
+        
+    }
 
     public void Initialize(CrystalBossStateEnum stateEnum, CrystalBoss boss)
     {
