@@ -3,20 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrytalBossPillarPatternState : CrystalBossState
+public class CrytalBossPillarPatternState : CrystalBossPatternState
 {
     private Transform ground;
     private float time;
+    private Transform crystalParent;
     public CrytalBossPillarPatternState(CrystalBoss boss, CrystalBossStateMachine bossStateMachine, string animationName) : base(boss, bossStateMachine, animationName)
     {
+        crystalParent = _boss.transform.Find("CrystalGround");
     }
 
     public override void Enter()
     {
         base.Enter();
-        _boss.PrefabSpawn(_boss.PrefabList[1], "CrystalGround", 1,this);
-        ground = _boss.transform.Find("Ground");
-        ground.gameObject.SetActive(true);
+        if(crystalParent.childCount ==0)
+            _boss.PrefabSpawn(_boss.PrefabList[1], "CrystalGround", 1,this);
+        if(ground ==null)
+            ground = _boss.transform.Find("Ground");
+        _boss.StartCoroutine(PillarPattern());
         //if(_boss.IsPlayerCubeDetection())
         //{
         //    Debug.Log(1);
@@ -34,9 +38,16 @@ public class CrytalBossPillarPatternState : CrystalBossState
         ground.gameObject.SetActive(true);
         ground.GetComponent<MeshRenderer>().material.DOColor(Color.red, 2);
         yield return new WaitForSeconds(1);
+        //if (_boss.IsPlayerCubeDetection(ground.localScale/2))
+            //Debug.Log(1);
         ground.gameObject.SetActive(false);
-
-
+        yield return new WaitForSeconds(0.3f);
+        prefabList[0].transform.localScale = _boss.PrefabList[1].transform.localScale;
+        prefabList[0].SetActive(true);
+        _boss.IsPlayerCubeDetection(ground.localScale/2);
+        yield return new WaitForSeconds(1.5f);
+        prefabList[0].SetActive(false);
+        _stateMachine.ChangeState(CrystalBossStateEnum.Idle);
 
     }
 
@@ -46,11 +57,11 @@ public class CrytalBossPillarPatternState : CrystalBossState
     {
 
         //time = Time.deltaTime;
-        //if()
+        //if (Input.GetKeyDown(KeyCode.E))
         //{
-        //    ground.GetComponent<MeshRenderer>().material.DOColor(Color.red,2);
+        //    _boss.StartCoroutine(PillarPattern());
         //}
-        
+
 
     }
 
