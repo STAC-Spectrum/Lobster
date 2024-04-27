@@ -7,12 +7,17 @@ public interface TestInterface
     public void Initialize(CrystalBoss boss);
 }
 
+
 public class Test_1 : MonoBehaviour
 {
+
+    delegate void TestDelegate<T>(T a, T b);
+    TestDelegate<int> test;
+
     
-    public void AA()
-    {
-        Debug.Log(1);
-    }
+
+
 
 }
+
+

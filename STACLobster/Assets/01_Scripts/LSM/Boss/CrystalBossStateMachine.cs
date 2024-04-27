@@ -8,13 +8,13 @@ public class CrystalBossStateMachine : MonoBehaviour
     public Dictionary<CrystalBossStateEnum, CrystalBossState> stateDictionary = 
         new Dictionary<CrystalBossStateEnum, CrystalBossState>();
 
+
     public CrystalBossState CurrentState { get; private set; }
-    public List<CrystalBossState> SkillList = new List<CrystalBossState>();
+    public List<CrystalBossStateEnum> SkillList = new List<CrystalBossStateEnum>();
     private CrystalBoss _boss;
 
     private void Awake()
     {
-        
     }
 
     public void Initialize(CrystalBossStateEnum stateEnum, CrystalBoss boss)
@@ -36,6 +36,12 @@ public class CrystalBossStateMachine : MonoBehaviour
     public void AddState(CrystalBossStateEnum stateEnum, CrystalBossState state)
     {
         stateDictionary.Add(stateEnum, state);
+        if (state is CrystalBossPatternState)
+        {
+            SkillList.Add(stateEnum);
+        }
+
+
     }
 
 }
