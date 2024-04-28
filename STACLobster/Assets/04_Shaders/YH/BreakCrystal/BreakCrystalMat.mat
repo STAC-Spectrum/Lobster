@@ -50,12 +50,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Distance: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Seed: 300
     - _StepValue: 0
     m_Colors:
     - _Color: {r: 0, g: 0.14688347, b: 3.24901, a: 1}
+    - _TexelSize: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4388542130509134568
 MonoBehaviour:
