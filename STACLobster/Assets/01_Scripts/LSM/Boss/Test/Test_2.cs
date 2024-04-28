@@ -13,6 +13,6 @@ public class Test_2 : Test_1
     // Update is called once per frame
     void Update()
     {
-        AA();
+        //AA();
     }
 }
