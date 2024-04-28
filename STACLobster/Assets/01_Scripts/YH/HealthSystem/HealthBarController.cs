@@ -17,6 +17,7 @@ public class HealthBarController : MonoBehaviour
     [SerializeField] private GameObject heartContainerPrefab;
     [SerializeField] private Shader _shader;
 
+    private float currentHealth;
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -62,7 +63,7 @@ public class HealthBarController : MonoBehaviour
         for (int i = 0; i < _heartContainers.Length; i++)
         {
             if (i < PlayerStats.Instance.MaxHealth)
-            {
+            { 
                 _heartContainers[i].SetActive(true);
             }
             else
@@ -76,40 +77,44 @@ public class HealthBarController : MonoBehaviour
     {
         for (int i = 0; i < _heartFills.Length; i++)
         {
-            if (i < PlayerStats.Instance.Health)
+            if (i == PlayerStats.Instance.Health)
             {
-                StartCoroutine(HeartFill(_heartFills[i], true));
+                if (currentHealth < PlayerStats.Instance.Health)
+                {
+                    StartCoroutine(HeartUnFill(_heartFills[i]));
+                }
+                else if (currentHealth> PlayerStats.Instance.Health)
+                {
+                    StartCoroutine(HeartFill(_heartFills[i+1]));
+                }
             }
-            else
-            {
-                StartCoroutine(HeartFill(_heartFills[i], false));
-            }
-        }
-
-        if (PlayerStats.Instance.Health % 1 != 0)
-        {
-            int lastPos = Mathf.FloorToInt(PlayerStats.Instance.Health);
-            _heartFills[lastPos].fillAmount = PlayerStats.Instance.Health % 1;
         }
     }
-    private IEnumerator HeartFill(Image i, bool isFill)
+    private IEnumerator HeartFill(Image i)
     {
         float currentTime = 0;
-        float currentFill = 0;
+        
         while (currentTime <= 1f)
         {
             currentTime += Time.deltaTime;
-            if (i.material.GetFloat("_StepValue") == 0)
-            {
-                currentFill = Mathf.Lerp(0, 1, currentTime);
-            }
-            if (i.material.GetFloat("_StepValue") == 1)
-            {
-                currentFill = Mathf.Lerp(1, 0, currentTime);
-            }
+            float currentFill = Mathf.Lerp(0, 1, currentTime);
             i.material.SetFloat("_StepValue", currentFill);
             yield return null;
         }
+        currentHealth++;
+    }
+    private IEnumerator HeartUnFill(Image i)
+    {
+        float currentTime = 0;
+
+        while (currentTime <= 1f)
+        {
+            currentTime += Time.deltaTime;
+            float currentFill = Mathf.Lerp(1, 0, currentTime);
+            i.material.SetFloat("_StepValue", currentFill);
+            yield return null;
+        }
+        currentHealth--;
     }
 
     private void InstantiateHeartContainers()
