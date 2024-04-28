@@ -9,9 +9,9 @@ public class CrystalBoss : MonoBehaviour
 {
 
     [Header("Setting")]
-    public float laserPatternDistance;
-    public Vector3 paillPatternSize;
+    //public float laserPatternDistance;
     public LayerMask plyaerMask;
+    public int LaserCount;
 
     [Header("AttackSetting")]
     public List<GameObject> PrefabList  = new List<GameObject>();
@@ -49,14 +49,14 @@ public class CrystalBoss : MonoBehaviour
         StateMachine.CurrentState.UpdateState();
     }
 
-    public virtual Collider IsPlayerSphereDetection()
-    {
+    //public virtual Collider IsPlayerSphereDetection()
+    //{
 
-        detectionCollider = Physics.OverlapSphere(transform.position, laserPatternDistance, plyaerMask);
+    //    detectionCollider = Physics.OverlapSphere(transform.position, laserPatternDistance, plyaerMask);
 
-        return detectionCollider.Length >= 1 ? detectionCollider[0] : null;
+    //    return detectionCollider.Length >= 1 ? detectionCollider[0] : null;
         
-    }
+    //}
 
     public virtual Collider IsPlayerCubeDetection(Vector3 boxSize)
     {
@@ -72,9 +72,10 @@ public class CrystalBoss : MonoBehaviour
         for (int i =0;i<count;++i)
         {
             parentObj = transform.Find(parent);
-            GameObject obj = Instantiate(prefab, transform);
+            GameObject obj = Instantiate(prefab, parentObj.transform);
             obj.transform.parent = parentObj.transform;
-            obj.transform.localScale = new Vector3(0.1f,2,0.1f);
+            obj.transform.localScale = Vector3.zero;
+            //obj.transform.localScale = Vector3.one * 0.1f;
             obj.SetActive(false);
             state.prefabList.Add(obj);
             
@@ -83,10 +84,10 @@ public class CrystalBoss : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, laserPatternDistance);
+        //Gizmos.color = Color.green;
+        //Gizmos.DrawWireSphere(transform.position, laserPatternDistance);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, new Vector3(50,1,100));
+        Gizmos.DrawWireCube(transform.position, PrefabList[1].transform.localScale);
     }
 
 
