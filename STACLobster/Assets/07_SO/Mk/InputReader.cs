@@ -7,11 +7,11 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "SO/InputReader")]
 public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
 {
-    public event Action<Vector2> MovementEvent;
     public event Action<bool> MoveDownEvent;
     public event Action JumpEvent;
     public event Action<bool> BulletTimeEvent;
     public event Action<double> LightRush;
+    public event Action AttackEvent;
 
     public PlayerInput _playerActions;
 
@@ -22,14 +22,13 @@ public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
             _playerActions = new PlayerInput();
             _playerActions.Player.SetCallbacks(this);
         }
-        
+
         _playerActions.Player.Enable();  //Active Input
     }
 
     public void OnMovement(InputAction.CallbackContext context)
     {
-        Vector2 vec = context.ReadValue<Vector2>();
-        MovementEvent?.Invoke(vec);
+
     }
 
     public void OnMoveDown(InputAction.CallbackContext context)
@@ -57,5 +56,11 @@ public class InputReader : ScriptableObject, PlayerInput.IPlayerActions
     {
         double vec = context.ReadValue<Double>();
         LightRush?.Invoke(vec);
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            AttackEvent?.Invoke();
     }
 }
