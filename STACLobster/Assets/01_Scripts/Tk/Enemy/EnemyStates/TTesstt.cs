@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test_2 : Test_1
+public class TTesstt : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,6 +13,6 @@ public class Test_2 : Test_1
     // Update is called once per frame
     void Update()
     {
-        //AA();
+        
     }
 }
