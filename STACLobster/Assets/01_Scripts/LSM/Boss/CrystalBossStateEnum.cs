@@ -8,7 +8,7 @@ public enum CrystalBossStateEnum
     Idle,
     Laser,
     DashAttack,
-    JumpAttack,
+    PillarAttack,
 
 
 

@@ -4,17 +4,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class CrystalBossLaserPatternState : CrystalBossState
+public class CrystalBossLaserPatternState : CrystalBossPatternState
 {
     bool isLaser;
     float time = 0;
+    private Transform crystalParent;
+    //List<GameObject> LaserList = new List<GameObject>();
     public CrystalBossLaserPatternState(CrystalBoss boss, CrystalBossStateMachine bossStateMachine, string animationName) : base(boss, bossStateMachine, animationName)
     {
+        crystalParent = _boss.transform.Find("LaserParent");
     }
 
     public override void Enter()
     {
         base.Enter();
+        crystalParent.localRotation = Quaternion.Euler(Vector3.zero);
+        if (crystalParent.childCount == 0)
+            _boss.PrefabSpawn(_boss.PrefabList[0], "LaserParent", 6, this);
         _boss.StartCoroutine(Spawn());
         //mySequence.
         //    Append();
@@ -24,35 +30,45 @@ public class CrystalBossLaserPatternState : CrystalBossState
 
     private IEnumerator Spawn()
     {
-        _boss.LaserSpawn(_boss.LaserPrefab, 6);
         int angle = 0;
-        for (int i = 0; i < _boss.prefabList.Count; ++i)
+        for (int i = 0; i < prefabList.Count; ++i)
         {
-            angle = 360 / _boss.prefabList.Count * i;
-            _boss.prefabList[i].transform.rotation = Quaternion.Euler(new Vector3(angle, 0, 0));
-            _boss.prefabList[i].transform.Translate(Vector3.up * 3);
-            _boss.prefabList[i].transform.DOScaleY(2, 0.1f);
-            _boss.prefabList[i].SetActive(true);
+            angle = 360 / prefabList.Count * i;
+            prefabList[i].transform.rotation = Quaternion.Euler(new Vector3(angle, 0, 0));
+            prefabList[i].transform.Translate(Vector3.up * 5);
+            //s.prefabList[i].transform.DOScaleY(2, 0.1f);
+            prefabList[i].SetActive(true);
 
         }
         yield return new WaitForSeconds(1f);
-        for(int i = 0; i < _boss.prefabList.Count; ++i)
+        for(int i = 0; i < prefabList.Count; ++i)
         {
-            _boss.prefabList[i].transform.DOScale(new Vector3(1,2,1), 0.1f);
+            prefabList[i].transform.DOScale(new Vector3(1,2,1), 0.1f);
 
         }
         yield return new WaitForSeconds(1.5f);
         isLaser = true;
         
+    }
 
-        
-
-
+    private IEnumerator StopLaserPattern()
+    {
+        for(int i =0;i<prefabList.Count;++i)
+        {
+            prefabList[i].transform.DOScale(new Vector3(0.1f, 2, 0.1f), 1);
+        }
+        yield return new WaitForSeconds(1f);
+        for (int i = 0; i < prefabList.Count; ++i)
+        {
+            prefabList[i].transform.Translate(Vector3.down * 5);
+        }
+        crystalParent.gameObject.SetActive(false);
     }
 
     public override void Exit()
     {
         base.Exit();
+
     }
 
     public override void UpdateState()
@@ -61,18 +77,20 @@ public class CrystalBossLaserPatternState : CrystalBossState
         {
             if(time < 3)
             {
+                crystalParent.gameObject.SetActive(true);
                 time += Time.deltaTime;
 
-                _boss.parentObj.Rotate(Vector3.left * 50 * Time.deltaTime);
+                crystalParent.Rotate(Vector3.left * 50 * Time.deltaTime);
             }
             else
             {
                 isLaser = false;
                 time = 0;
+                _boss.StartCoroutine(StopLaserPattern());
+                _stateMachine.ChangeState(CrystalBossStateEnum.Idle);
 
             }
         }
-        //if (isPattern == false)
 
     }
 
