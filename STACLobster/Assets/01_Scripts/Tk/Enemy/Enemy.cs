@@ -8,9 +8,10 @@ public enum EnemyStateEnum
     Chase,
     Attack,
     Dead,
+    Hit, // 맞았을 때임
 }
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IHitable
 {
     #region 설정 해줘야 하는 값들
     [Header("Setting Values")]
@@ -83,9 +84,6 @@ public abstract class Enemy : MonoBehaviour
             RotateEnemy();
         }
         ChaseRangeCast(); // 범위 내 적을 체크해줌
-        
-        if(!IsDead) 
-            Dead(); // 죽었나? 체크
     }
 
     public Coroutine StartDelayCallback(float time, Action action)
@@ -145,6 +143,24 @@ public abstract class Enemy : MonoBehaviour
             _isFlip = false;
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
+    }
+
+    public void HitProcess(float damage)
+    {
+        KnockbackProcess(damage * 0.1f);
+        health -= damage;
+
+        if (!IsDead)
+        {
+            Dead();
+        }
+    }
+
+    private void KnockbackProcess(float knockbackForce = 2f)
+    {
+        Vector3 knockbackDir = transform.position - playerPos;
+        knockbackDir.Normalize();
+        Rigid.AddForce(knockbackDir * knockbackForce, ForceMode.Force);
     }
 
     public void Dead()
