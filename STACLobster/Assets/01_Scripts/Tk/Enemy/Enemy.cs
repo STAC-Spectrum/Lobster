@@ -17,15 +17,17 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected float _chaseRange;
     [SerializeField] protected float _attackRange;
     [SerializeField] private Transform _footTrm;
+    [SerializeField] private LayerMask _whatIsPlayer;
     public float health;
     public float lastAttackTime;
     public float attackCooldown;
     public float moveSpeed;
     public float chaseSpeed;
-    public float defaultMoveSpeed;
-    public Vector3 playerPos;
+    [HideInInspector] public float defaultMoveSpeed;
+    [HideInInspector] public Vector3 playerPos;
     protected Transform _visualTrm;
     private bool _isFlip = false;
+    private Collider[] _playerContainer;
     #endregion
 
     #region 벽이랑 땅 감지해주는 애들
@@ -46,6 +48,7 @@ public abstract class Enemy : MonoBehaviour
         _visualTrm = transform.Find("Visual");
         Rigid = GetComponent<Rigidbody>();
         defaultMoveSpeed = moveSpeed;
+        _playerContainer = new Collider[1];
 
         StateMachine = new EnemyStateMachine();
 
@@ -80,7 +83,9 @@ public abstract class Enemy : MonoBehaviour
             RotateEnemy();
         }
         ChaseRangeCast(); // 범위 내 적을 체크해줌
-        Dead();
+        
+        if(!IsDead) 
+            Dead(); // 죽었나? 체크
     }
 
     public Coroutine StartDelayCallback(float time, Action action)
@@ -121,25 +126,11 @@ public abstract class Enemy : MonoBehaviour
         return playerPos;
     }
 
-    public virtual bool AttackRangeCast()
+    public virtual Collider AttackRangeCast()
     {
-        Collider[] playerInRange = Physics.OverlapSphere(transform.position,
-            _attackRange);
-        if (playerInRange.Length > 0)
-        {
-            foreach (Collider hit in playerInRange)
-            {
-                if (hit.transform.TryGetComponent<TTesstt>(out TTesstt ts))
-                {
-                    return true;
-                }
-            }
-        }
-        else
-        {
-            return false;
-        }
-        return false;
+        int playerInRange = Physics.OverlapSphereNonAlloc(transform.position,
+            _attackRange, _playerContainer, _whatIsPlayer);
+        return playerInRange >= 1 ? _playerContainer[0] : null;
     }
 
     public void RotateEnemy()
@@ -158,7 +149,7 @@ public abstract class Enemy : MonoBehaviour
 
     public void Dead()
     {
-        if(health <= 0 && !IsDead)
+        if(health <= 0)
         {
             Debug.Log("Transition to Dead State");
             IsDead = true;

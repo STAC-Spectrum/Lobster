@@ -12,6 +12,7 @@ public class EnemyAttackState : EnemyState
     {
         base.Enter();
         Debug.Log("공격 실행");
+        _enemy.Attack();
     }
 
     public override void UpdateState()
@@ -23,10 +24,10 @@ public class EnemyAttackState : EnemyState
             _stateMachine.ChangeState(EnemyStateEnum.Idle);
         }
 
-        if (!_enemy.AttackRangeCast())
+        if (_enemy.AttackRangeCast() == null)
         {
             Debug.Log("Transition to Chase State");
-            _stateMachine.ChangeState(EnemyStateEnum.Chase);
+            _stateMachine.ChangeState(EnemyStateEnum.Idle);
         }
 
         _enemy.StopImmediately();

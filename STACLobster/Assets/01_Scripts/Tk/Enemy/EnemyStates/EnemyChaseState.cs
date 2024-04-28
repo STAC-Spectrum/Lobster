@@ -22,7 +22,7 @@ public class EnemyChaseState : EnemyState
     {
         base.UpdateState();
         bool canAttack = _enemy.lastAttackTime + _enemy.attackCooldown <= Time.time;
-        if (_enemy.AttackRangeCast() && canAttack)
+        if (_enemy.AttackRangeCast() != null && canAttack)
         {
             Debug.Log("Transition to Attack State");
             _stateMachine.ChangeState(EnemyStateEnum.Attack);

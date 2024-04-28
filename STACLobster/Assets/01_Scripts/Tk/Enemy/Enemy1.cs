@@ -11,6 +11,12 @@ public class Enemy1 : Enemy
         StateMachine.Initialize(EnemyStateEnum.Idle, this);
     }
 
+    public override void Attack()
+    {
+        base.Attack();
+        Destroy(AttackRangeCast().gameObject, 1);
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
