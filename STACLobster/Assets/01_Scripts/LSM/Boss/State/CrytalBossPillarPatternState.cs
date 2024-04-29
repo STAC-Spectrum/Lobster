@@ -43,6 +43,7 @@ public class CrytalBossPillarPatternState : CrystalBossPatternState
         ground.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.3f);
         prefabList[0].transform.localScale = _boss.PrefabList[1].transform.localScale;
+        _boss.transform.DOMoveY(-5, 0.5f);
         prefabList[0].SetActive(true);
         _boss.IsPlayerCubeDetection(ground.localScale/2);
         yield return new WaitForSeconds(1.5f);

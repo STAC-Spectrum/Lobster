@@ -22,6 +22,7 @@ public class CrystalBossLaserPatternState : CrystalBossPatternState
         if (crystalParent.childCount == 0)
             _boss.PrefabSpawn(_boss.PrefabList[0], "LaserParent", _boss.LaserCount, this);
         _boss.StartCoroutine(Spawn());
+        _boss.transform.DOMoveY(5, 0.5f);
         
         //mySequence.
         //    Append();
