@@ -83,9 +83,13 @@ public class HealthBarController : MonoBehaviour
                 {
                     StartCoroutine(HeartUnFill(_heartFills[i]));
                 }
-                else if (currentHealth> PlayerStats.Instance.Health)
+                else if (currentHealth > PlayerStats.Instance.Health)
                 {
                     StartCoroutine(HeartFill(_heartFills[i+1]));
+                }
+                else if(currentHealth==PlayerStats.Instance.Health)
+                {
+                    continue;
                 }
             }
         }
