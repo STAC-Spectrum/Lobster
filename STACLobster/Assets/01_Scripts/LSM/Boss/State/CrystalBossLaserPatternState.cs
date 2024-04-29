@@ -21,8 +21,9 @@ public class CrystalBossLaserPatternState : CrystalBossPatternState
         crystalParent.localRotation = Quaternion.Euler(Vector3.zero);
         if (crystalParent.childCount == 0)
             _boss.PrefabSpawn(_boss.PrefabList[0], "LaserParent", _boss.LaserCount, this);
+        _boss.transform.DOMoveY(_boss.transform.position.y + 5, 0.7f);
+ 
         _boss.StartCoroutine(Spawn());
-        _boss.transform.DOMoveY(5, 0.5f);
         
         //mySequence.
         //    Append();
@@ -32,6 +33,7 @@ public class CrystalBossLaserPatternState : CrystalBossPatternState
 
     private IEnumerator Spawn()
     {
+        yield return new WaitForSeconds(0.8f);
         int angle = 0;
         crystalParent.gameObject.SetActive(true);
         for (int i = 0; i < prefabList.Count; ++i)
