@@ -79,17 +79,13 @@ public class HealthBarController : MonoBehaviour
         {
             if (i == PlayerStats.Instance.Health)
             {
-                if (currentHealth < PlayerStats.Instance.Health)
+                if (PlayerStats.Instance.Health - currentHealth == -1)
                 {
                     StartCoroutine(HeartUnFill(_heartFills[i]));
                 }
-                else if (currentHealth > PlayerStats.Instance.Health)
+                else if (PlayerStats.Instance.Health - currentHealth == 1)
                 {
-                    StartCoroutine(HeartFill(_heartFills[i+1]));
-                }
-                else if(currentHealth==PlayerStats.Instance.Health)
-                {
-                    continue;
+                    StartCoroutine(HeartFill(_heartFills[i - 1]));
                 }
             }
         }
@@ -101,7 +97,7 @@ public class HealthBarController : MonoBehaviour
         while (currentTime <= 1f)
         {
             currentTime += Time.deltaTime;
-            float currentFill = Mathf.Lerp(0, 1, currentTime);
+            float currentFill = Mathf.Lerp(1, 0, currentTime);
             i.material.SetFloat("_StepValue", currentFill);
             yield return null;
         }
@@ -114,7 +110,7 @@ public class HealthBarController : MonoBehaviour
         while (currentTime <= 1f)
         {
             currentTime += Time.deltaTime;
-            float currentFill = Mathf.Lerp(1, 0, currentTime);
+            float currentFill = Mathf.Lerp(0, 1, currentTime);
             i.material.SetFloat("_StepValue", currentFill);
             yield return null;
         }
