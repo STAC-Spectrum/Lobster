@@ -5,7 +5,9 @@ using UnityEngine.InputSystem;
 
 public class Player : Agent
 {
+    [SerializeField] private Avatar[] avatars;
     [SerializeField] private InputReader _inputReader;
+    [SerializeField] private Animator _animator;
     private Camera _main;
 
     #region Lights
@@ -82,7 +84,9 @@ public class Player : Agent
         {
             Vector3 dir = hit.point;
             dir.z = 0;
-            _testTargetMouse.transform.position = dir;
+
+            //! 이거 지우셈
+            //_testTargetMouse.transform.position = dir;
         }
     }
 
@@ -116,6 +120,7 @@ public class Player : Agent
     #region Event Handles
     private void BulletTimeHandle(bool isPress)
     {
+        if (cool) return;
         Time.timeScale = isPress ? 0.4f : 1f;
 
         // 일단 여기다가 빛변신 움직임 구현
@@ -147,6 +152,18 @@ public class Player : Agent
 
     private void Movement()
     {
+
+        if (_isAnimation) return;
+
+        _isAnimation = true;
+
+        _animator.avatar = avatars[1];
+
+        _animator.SetBool("Idle", false);
+        _animator.SetBool("Attack", false);
+
+        _animator.SetFloat("Run", _rigidbody.velocity.x);
+
         if (_isLightMove) return;
 
         Vector2 inputVector = _inputReader._playerActions.Player.Movement.ReadValue<Vector2>();
@@ -154,6 +171,20 @@ public class Player : Agent
 
         if (inputVector != Vector2.zero)
             transform.right = new Vector3(_rigidbody.velocity.x, 0, 0);
+
+        if (_rigidbody.velocity.x >= 0.1)
+        {
+            if (_isAnimation) return;
+
+            _isAnimation = true;
+
+            _animator.SetBool("Idle", true);
+            _animator.SetBool("Attack", false);
+            _animator.SetFloat("Run", 0);
+
+            _animator.avatar = avatars[0];
+        }
+
     }
 
     private bool _isLightMove;
@@ -163,15 +194,18 @@ public class Player : Agent
 
     private void LightMove()
     {
+        if (cool) return;
         if (_isLightMove) return;
 
         _visual.gameObject.SetActive(false);  // 캐릭터 숨기고
         _testLight.SetActive(true); // 빛 이펙트 보이고
         _isLightMove = true;
         _rigidbody.useGravity = false;  // 중력 제거
+        cool = true;
 
         MoveToMousePos();
         StartCoroutine(LightMoveDelay());
+        StartCoroutine(LightCoolDown());
 
     }
 
@@ -179,11 +213,19 @@ public class Player : Agent
 
     private IEnumerator LightMoveDelay()
     {
-        yield return new WaitForSeconds(_lightMoveDelayTime);
+        yield return new WaitForSeconds(0.3f);
         _visual.gameObject.SetActive(true);
         _testLight.SetActive(false);
         _rigidbody.useGravity = true;
         _isLightMove = false;
+    }
+
+    [SerializeField] private float lightCooldown = 1.2f;
+    private bool cool = false;
+    private IEnumerator LightCoolDown()
+    {
+        yield return new WaitForSeconds(lightCooldown);
+        cool = false;
     }
     #endregion
 
@@ -226,16 +268,28 @@ public class Player : Agent
     [SerializeField] private float _rayMaxDistance = 3f;
     [SerializeField] private float _rayInterpolation = 0.5f;
 
+    private bool _isAnimation = false;
 
     public void AttackHandle()
     {
         // 일단 플레이어 기본으로 주먹을 만들어야 함 관련 변수는 위에 추가하기로 하고
+        if (_isAnimation) return;
+
+        _isAnimation = true;
+
+        _animator.avatar = avatars[2];
+
+        _animator.SetFloat("Run", 0);
+        _animator.SetBool("Idle", false);
+
+        _animator.SetBool("Attack", true);
 
         Vector3 startPos = GetRayStartPos();
         if (Physics.SphereCast(
             startPos,
             _rayRadius, transform.right, out RaycastHit hit, _rayMaxDistance, _enemyLayer))
         {
+            hit.transform.CompareTag("Enemy");
             print("피격!!!");
             // 맞으면
             // 에너미한테 데미지 주기
@@ -249,6 +303,11 @@ public class Player : Agent
     {
         PlayerAttackDamage += 5;  // 적 타격시 상승 데미지 폭 / 데미지가 30일 경우 10 상승 / 최대 40 데미지
         // TODO : 어택 콤보 스택 계산 필요함 / 어떻게 콤보 이을것 이고 끊을지 만들어야함
+    }
+
+    public void AnimationEnd()
+    {
+        _isAnimation = false;
     }
 
     private Vector3 GetRayStartPos()

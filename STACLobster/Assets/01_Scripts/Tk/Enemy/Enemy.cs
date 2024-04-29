@@ -8,12 +8,12 @@ public enum EnemyStateEnum
     Chase,
     Attack,
     Dead,
-    Hit, // ¸Â¾ÒÀ» ¶§ÀÓ
+    Hit, // ï¿½Â¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 }
 
 public abstract class Enemy : MonoBehaviour, IHitable
 {
-    #region ¼³Á¤ ÇØÁà¾ß ÇÏ´Â °ªµé
+    #region ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
     [Header("Setting Values")]
     [SerializeField] protected float _chaseRange;
     [SerializeField] protected float _attackRange;
@@ -31,13 +31,13 @@ public abstract class Enemy : MonoBehaviour, IHitable
     private Collider[] _playerContainer;
     #endregion
 
-    #region º®ÀÌ¶û ¶¥ °¨ÁöÇØÁÖ´Â ¾Öµé
-    [Header("Checkers")] // º®°ú ¶¥À» Å½ÁöÇÏ´Â ÀåÄ¡µé
+    #region ï¿½ï¿½ï¿½Ì¶ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Öµï¿½
+    [Header("Checkers")] // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½
     public GroundChecker groundChecker;
     public WallChecker wallChecker;
     #endregion
 
-    #region ÇÁ·ÎÆÛÆ¼µé
+    #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½
     [HideInInspector] public Rigidbody Rigid { get; private set; }
 
     [HideInInspector] public Animator AnimatorCompo { get; private set; }
@@ -45,7 +45,7 @@ public abstract class Enemy : MonoBehaviour, IHitable
     [HideInInspector] public EnemyStateMachine StateMachine { get; protected set; }
     [HideInInspector] public bool CanStateChangeable { get; protected set; } = true;
     [HideInInspector] public bool IsDead { get; protected set; } = false;
-    #endregion ÇÁ·ÎÆÛÆ¼µé
+    #endregion ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½
 
     public virtual void Awake()
     {
@@ -57,7 +57,7 @@ public abstract class Enemy : MonoBehaviour, IHitable
 
         StateMachine = new EnemyStateMachine();
 
-        foreach(EnemyStateEnum state in Enum.GetValues(typeof(EnemyStateEnum)))
+        foreach (EnemyStateEnum state in Enum.GetValues(typeof(EnemyStateEnum)))
         {
             string stateName = state.ToString();
 
@@ -79,15 +79,15 @@ public abstract class Enemy : MonoBehaviour, IHitable
     {
         StateMachine.CurrentState.UpdateState();
 
-        if (!groundChecker.CheckGround()) // ¾Õ¿¡ ¶¥ÀÌ ¾ø´Â »óÈ²¿¡´Â È¸Àü
-        {
-            RotateEnemy();         
-        }
-        else if (wallChecker.CheckWall()) // ¾ÕÀÌ º®À¸·Î ¸·ÇôÀÖ´Â »óÈ²¿¡´Â È¸Àü
+        if (!groundChecker.CheckGround()) // ï¿½Õ¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È²ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½
         {
             RotateEnemy();
         }
-        ChaseRangeCast(); // ¹üÀ§ ³» ÀûÀ» Ã¼Å©ÇØÁÜ
+        else if (wallChecker.CheckWall()) // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½È²ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½
+        {
+            RotateEnemy();
+        }
+        ChaseRangeCast(); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½ï¿½ï¿½ï¿½
     }
 
     public Coroutine StartDelayCallback(float time, Action action)
@@ -111,7 +111,7 @@ public abstract class Enemy : MonoBehaviour, IHitable
         playerPos = Vector3.zero;
         Collider[] playerInRange = Physics.OverlapSphere(transform.position,
             _chaseRange);
-        if(playerInRange.Length > 0)
+        if (playerInRange.Length > 0)
         {
             foreach (Collider hit in playerInRange)
             {
@@ -169,7 +169,7 @@ public abstract class Enemy : MonoBehaviour, IHitable
 
     public void Dead()
     {
-        if(health <= 0)
+        if (health <= 0)
         {
             Debug.Log("Transition to Dead State");
             IsDead = true;
