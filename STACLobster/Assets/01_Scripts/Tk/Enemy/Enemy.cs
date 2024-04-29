@@ -39,6 +39,9 @@ public abstract class Enemy : MonoBehaviour, IHitable
 
     #region 프로퍼티들
     [HideInInspector] public Rigidbody Rigid { get; private set; }
+
+    [HideInInspector] public Animator AnimatorCompo { get; private set; }
+
     [HideInInspector] public EnemyStateMachine StateMachine { get; protected set; }
     [HideInInspector] public bool CanStateChangeable { get; protected set; } = true;
     [HideInInspector] public bool IsDead { get; protected set; } = false;
@@ -48,6 +51,7 @@ public abstract class Enemy : MonoBehaviour, IHitable
     {
         _visualTrm = transform.Find("Visual");
         Rigid = GetComponent<Rigidbody>();
+        AnimatorCompo = GetComponentInChildren<Animator>();
         defaultMoveSpeed = moveSpeed;
         _playerContainer = new Collider[1];
 

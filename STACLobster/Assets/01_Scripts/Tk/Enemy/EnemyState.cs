@@ -22,11 +22,12 @@ public abstract class EnemyState
     public virtual void Enter()
     {
         _endTriggerCalled = false;
+        _enemy.AnimatorCompo.SetBool(_animBoolHash, true);
     }
 
     public virtual void Exit()
     {
-
+        _enemy.AnimatorCompo.SetBool(_animBoolHash, false);
     }
 
     public virtual void UpdateState()
