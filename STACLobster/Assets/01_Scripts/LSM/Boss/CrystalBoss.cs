@@ -12,9 +12,12 @@ public class CrystalBoss : MonoBehaviour
     //public float laserPatternDistance;
     public LayerMask plyaerMask;
     public int LaserCount;
+    public Vector3 _bossRoomSize;
 
     [Header("AttackSetting")]
     public List<GameObject> PrefabList  = new List<GameObject>();
+
+    private Vector3 baseBossPos;
 
     public CrystalBossStateMachine StateMachine { get; set; }
 
@@ -41,7 +44,6 @@ public class CrystalBoss : MonoBehaviour
     private void Start()
     {
         StateMachine.Initialize(CrystalBossStateEnum.Idle,this);
-
     }
 
     private void Update()
@@ -58,10 +60,10 @@ public class CrystalBoss : MonoBehaviour
         
     //}
 
-    public virtual Collider IsPlayerCubeDetection(Vector3 boxSize)
+    public virtual Collider IsPlayerCubeDetection(Vector3 center,Vector3 boxSize)
     {
 
-        detectionCollider = Physics.OverlapBox(transform.position, boxSize, Quaternion.identity,plyaerMask);
+        detectionCollider = Physics.OverlapBox(center, boxSize/2, Quaternion.identity,plyaerMask);
 
         return detectionCollider.Length >= 1 ? detectionCollider[0] : null;
 
@@ -84,8 +86,9 @@ public class CrystalBoss : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //Gizmos.color = Color.green;
-        //Gizmos.DrawWireSphere(transform.position, laserPatternDistance);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(new Vector3(transform.position.x,transform.position.y +_bossRoomSize.y/2,transform.position.z)
+            , _bossRoomSize);
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position, PrefabList[1].transform.localScale);
     }

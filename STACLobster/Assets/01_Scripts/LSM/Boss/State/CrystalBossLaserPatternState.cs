@@ -69,6 +69,9 @@ public class CrystalBossLaserPatternState : CrystalBossPatternState
             prefabList[i].transform.Translate(Vector3.down * 5);
         }
         crystalParent.gameObject.SetActive(false);
+        yield return new WaitForSeconds(1f);
+        _stateMachine.ChangeState(CrystalBossStateEnum.PillarAttack);
+
     }
 
     public override void Exit()
@@ -81,11 +84,9 @@ public class CrystalBossLaserPatternState : CrystalBossPatternState
     {
         if(isLaser == true)
         {
-            if(time < 3)
+            if (time < 3)
             {
-                
                 time += Time.deltaTime;
-
                 crystalParent.Rotate(Vector3.left * 50 * Time.deltaTime);
             }
             else
@@ -93,7 +94,6 @@ public class CrystalBossLaserPatternState : CrystalBossPatternState
                 isLaser = false;
                 time = 0;
                 _boss.StartCoroutine(StopLaserPattern());
-                _stateMachine.ChangeState(CrystalBossStateEnum.Idle);
 
             }
         }
