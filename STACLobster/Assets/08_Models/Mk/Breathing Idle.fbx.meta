@@ -57,7 +57,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
+      - time: 0.023978189
         functionName: AnimationEnd
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -113,7 +113,8 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips: []
+  referencedClips:
+  - 66b192a36fa5fcd40bc929ba8aec2b23
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
