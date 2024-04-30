@@ -39,7 +39,7 @@ public class HealthBarController : MonoBehaviour
 
     private void Update()
     {
-        Test();
+        //Test();
     }
 
     public void UpdateHeartsHUD()
