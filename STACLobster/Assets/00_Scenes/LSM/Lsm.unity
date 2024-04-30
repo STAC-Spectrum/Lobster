@@ -1113,7 +1113,7 @@ GameObject:
   - component: {fileID: 921747993}
   - component: {fileID: 921747992}
   - component: {fileID: 921747991}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Plane (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1662,6 +1662,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 2714974990078209713, guid: 2e05ca919365cba47a96126e2e8c5132,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963566489786165872, guid: 2e05ca919365cba47a96126e2e8c5132,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
