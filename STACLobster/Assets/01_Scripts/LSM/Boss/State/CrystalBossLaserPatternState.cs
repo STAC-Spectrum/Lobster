@@ -39,7 +39,7 @@ public class CrystalBossLaserPatternState : CrystalBossPatternState
         for (int i = 0; i < prefabList.Count; ++i)
         {
             angle = 360 / prefabList.Count * i;
-            prefabList[i].transform.rotation = Quaternion.Euler(new Vector3(angle, 0, 0));
+            prefabList[i].transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
             prefabList[i].transform.Translate(Vector3.up * 5);
             //s.prefabList[i].transform.DOScaleY(2, 0.1f);
             prefabList[i].SetActive(true);
