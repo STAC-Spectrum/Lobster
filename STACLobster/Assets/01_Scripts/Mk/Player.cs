@@ -137,12 +137,13 @@ public class Player : Agent
     private void JumpHandle()
     {
         // smart rider this is very efficient
-
-        if (!Physics.Raycast(transform.position, Vector2.down, _maxDistance, _jumpLayerMask)) return;
-
-        var velocity = _rigidbody.velocity;
-        velocity = new Vector3(velocity.x, _jumpPower, velocity.z);
-        _rigidbody.velocity = velocity;
+        print("점");
+        if (Physics.Raycast(transform.position + new Vector3(0, 1f, 0), Vector2.down, _maxDistance, _jumpLayerMask))
+        {
+            var velocity = _rigidbody.velocity;
+            velocity = new Vector3(velocity.x, _jumpPower, velocity.z);
+            _rigidbody.velocity = velocity;
+        }
     }
 
     #endregion
@@ -273,10 +274,7 @@ public class Player : Agent
             startPos,
             _rayRadius, transform.right, out RaycastHit hit, _rayMaxDistance, _enemyLayer))
         {
-            if (hit.transform.CompareTag("Enemy"))
-            {
-                Destroy(hit.transform);
-            }
+            Destroy(hit.transform.gameObject);
             print("피격!!!");
             // 맞으면
             // 에너미한테 데미지 주기
