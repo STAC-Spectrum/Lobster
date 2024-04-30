@@ -157,11 +157,10 @@ public class Player : Agent
 
         isAnimation = true;
 
-
         _animator.SetBool("Idle", false);
         _animator.SetBool("Attack", false);
 
-        _animator.SetFloat("Run", _rigidbody.velocity.x);
+        _animator.SetFloat("Run", Mathf.Abs(_rigidbody.velocity.x));
 
         if (_isLightMove) return;
 
@@ -170,18 +169,6 @@ public class Player : Agent
 
         if (inputVector != Vector2.zero)
             transform.right = new Vector3(_rigidbody.velocity.x, 0, 0);
-
-        if (_rigidbody.velocity.x >= 0.1)
-        {
-            //if (isAnimation) return;
-            // ???????????????
-            isAnimation = true;
-
-            _animator.SetBool("Idle", true);
-            _animator.SetBool("Attack", false);
-            _animator.SetFloat("Run", 0);
-
-        }
 
     }
 
@@ -276,7 +263,7 @@ public class Player : Agent
 
         isAnimation = true;
 
-        _animator.SetFloat("Run", 0);
+        _animator.SetFloat("Run", Mathf.Abs(_rigidbody.velocity.x));
         _animator.SetBool("Idle", false);
 
         _animator.SetBool("Attack", true);

@@ -8,7 +8,8 @@ public class PlayerAnimation : MonoBehaviour
 
     private void AnimationEnd()
     {
-        Debug.Log($"dsafioijsdiofsfijodsofsojf");
+        print("아니ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ");
+        //this.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
         _player.isAnimation = false;
     }
 }
