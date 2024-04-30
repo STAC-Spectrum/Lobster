@@ -10,7 +10,7 @@ public class Platform : MonoBehaviour
     private Collider _collider;
 
     [SerializeField] private LayerMask[] _layer;
-    
+
     private void Awake()
     {
         _player = FindObjectOfType<Player>();
@@ -20,6 +20,8 @@ public class Platform : MonoBehaviour
 
     private void Update()
     {
+        if (_player == null) return;
+
         if (_playerRigidbody.velocity.y >= Mathf.Epsilon || _player.IsDown)
         {
             transform.gameObject.layer = 0;

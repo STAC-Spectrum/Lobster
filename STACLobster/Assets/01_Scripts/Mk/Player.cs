@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : Agent
 {
-    [SerializeField] private Avatar[] avatars;
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private Animator _animator;
     private Camera _main;
@@ -152,12 +152,11 @@ public class Player : Agent
 
     private void Movement()
     {
+        //??????????????????????????
+        //if (isAnimation) return;
 
-        if (_isAnimation) return;
+        isAnimation = true;
 
-        _isAnimation = true;
-
-        _animator.avatar = avatars[1];
 
         _animator.SetBool("Idle", false);
         _animator.SetBool("Attack", false);
@@ -174,15 +173,14 @@ public class Player : Agent
 
         if (_rigidbody.velocity.x >= 0.1)
         {
-            if (_isAnimation) return;
-
-            _isAnimation = true;
+            //if (isAnimation) return;
+            // ???????????????
+            isAnimation = true;
 
             _animator.SetBool("Idle", true);
             _animator.SetBool("Attack", false);
             _animator.SetFloat("Run", 0);
 
-            _animator.avatar = avatars[0];
         }
 
     }
@@ -268,16 +266,15 @@ public class Player : Agent
     [SerializeField] private float _rayMaxDistance = 3f;
     [SerializeField] private float _rayInterpolation = 0.5f;
 
-    private bool _isAnimation = false;
+    public bool isAnimation = false;
 
     public void AttackHandle()
     {
         // 일단 플레이어 기본으로 주먹을 만들어야 함 관련 변수는 위에 추가하기로 하고
-        if (_isAnimation) return;
+        // ??????????????????
+        //if (isAnimation) return;
 
-        _isAnimation = true;
-
-        _animator.avatar = avatars[2];
+        isAnimation = true;
 
         _animator.SetFloat("Run", 0);
         _animator.SetBool("Idle", false);
@@ -289,7 +286,10 @@ public class Player : Agent
             startPos,
             _rayRadius, transform.right, out RaycastHit hit, _rayMaxDistance, _enemyLayer))
         {
-            hit.transform.CompareTag("Enemy");
+            if (hit.transform.CompareTag("Enemy"))
+            {
+                Destroy(hit.transform);
+            }
             print("피격!!!");
             // 맞으면
             // 에너미한테 데미지 주기
@@ -305,10 +305,6 @@ public class Player : Agent
         // TODO : 어택 콤보 스택 계산 필요함 / 어떻게 콤보 이을것 이고 끊을지 만들어야함
     }
 
-    public void AnimationEnd()
-    {
-        _isAnimation = false;
-    }
 
     private Vector3 GetRayStartPos()
     {
