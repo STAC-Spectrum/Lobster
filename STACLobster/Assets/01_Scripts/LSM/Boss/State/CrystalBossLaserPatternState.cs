@@ -87,7 +87,8 @@ public class CrystalBossLaserPatternState : CrystalBossPatternState
             if (time < 3)
             {
                 time += Time.deltaTime;
-                crystalParent.Rotate(Vector3.left * 50 * Time.deltaTime);
+                crystalParent.Rotate(_boss.transform.forward * 50 * Time.deltaTime,0,0);
+                //crystalParent.transform.rotation = new Vector3(_boss)
             }
             else
             {
