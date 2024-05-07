@@ -45,8 +45,6 @@ public class CrytalBossPillarPatternState : CrystalBossPatternState
         ground.gameObject.SetActive(true);
         ground.GetComponent<MeshRenderer>().material.DOColor(Color.red, 2);
         yield return new WaitForSeconds(1);
-        //if (_boss.IsPlayerCubeDetection(ground.localScale/2))
-            //Debug.Log(1);
         ground.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.3f);
         prefabList[0].transform.localScale = _boss.PrefabList[1].transform.localScale;
@@ -54,7 +52,7 @@ public class CrytalBossPillarPatternState : CrystalBossPatternState
         yield return new WaitForSeconds(0.2f);
         prefabList[0].SetActive(true);
         prefabList[0].transform.position = hit.point;
-        _boss.IsPlayerCubeDetection(ground.localScale/2);
+        //_boss.IsPlayerCubeDetection(_boss.transform.position,ground.localScale);
         yield return new WaitForSeconds(1.5f);
         prefabList[0].SetActive(false);
         _stateMachine.ChangeState(CrystalBossStateEnum.Idle);
@@ -65,12 +63,6 @@ public class CrytalBossPillarPatternState : CrystalBossPatternState
 
     public override void UpdateState()
     {
-
-        //time = Time.deltaTime;
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    _boss.StartCoroutine(PillarPattern());
-        //}
 
 
     }
