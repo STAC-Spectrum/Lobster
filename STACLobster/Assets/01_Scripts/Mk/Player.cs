@@ -3,6 +3,7 @@ using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : Agent
 {
@@ -77,6 +78,12 @@ public class Player : Agent
 
     private void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            SceneManager.LoadScene(0);
+        }
+
         IsDown = _inputReader._playerActions.Player.MoveDown.IsPressed();
 
         RaycastHit hit;
