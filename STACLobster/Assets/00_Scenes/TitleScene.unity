@@ -325,8 +325,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1953998502}
-        m_TargetAssemblyTypeName: LSM_TitleUI, Assembly-CSharp
-        m_MethodName: Btn
+        m_TargetAssemblyTypeName: LSM_TitleBtnUI, Assembly-CSharp
+        m_MethodName: OnGameStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1743,8 +1743,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1953998502}
-        m_TargetAssemblyTypeName: LSM_TitleUI, Assembly-CSharp
-        m_MethodName: Btn
+        m_TargetAssemblyTypeName: LSM_TitleBtnUI, Assembly-CSharp
+        m_MethodName: OnSetting
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1981,8 +1981,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1953998502}
-        m_TargetAssemblyTypeName: LSM_TitleUI, Assembly-CSharp
-        m_MethodName: Btn
+        m_TargetAssemblyTypeName: LSM_TitleBtnUI, Assembly-CSharp
+        m_MethodName: OnExit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
