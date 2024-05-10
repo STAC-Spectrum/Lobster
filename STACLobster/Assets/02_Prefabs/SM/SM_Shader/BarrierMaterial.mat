@@ -54,9 +54,9 @@ Material:
     - _Offset: 0.72
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Sell: 10
+    - _Sell: 60
     - _TIme: 1
-    - _Voronoi: 2.58
+    - _Voronoi: 20
     m_Colors:
     - _Color: {r: 0, g: 21.361254, b: 12.332429, a: 0}
   m_BuildTextureStacks: []
