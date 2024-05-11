@@ -232,6 +232,7 @@ public class Player : Agent
     /// Basic Player Attack Damage = 20
     /// </summary>
     public int _playerAttackDamage = 20;
+    public GameObject hitEffect;
     /// <summary>
     /// Player Attack Count
     /// </summary>
@@ -277,10 +278,12 @@ public class Player : Agent
         _animator.SetBool("Attack", true);
 
         Vector3 startPos = GetRayStartPos();
+
         if (Physics.SphereCast(
             startPos,
             _rayRadius, transform.right, out RaycastHit hit, _rayMaxDistance, _enemyLayer))
         {
+            Instantiate(hitEffect, hit.transform.position, Quaternion.identity);
             Destroy(hit.transform.gameObject);
             print("피격!!!");
             // 맞으면
